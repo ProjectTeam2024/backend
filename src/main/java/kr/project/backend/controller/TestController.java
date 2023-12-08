@@ -1,6 +1,7 @@
 package kr.project.backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -9,5 +10,9 @@ public class TestController {
     @GetMapping("/")
     public String get(){
         return "마지막테스트22";
+    }
+    @GetMapping("/api/v1/test")
+    public String get2(){
+        return "스웨거 테스트";
     }
 }
