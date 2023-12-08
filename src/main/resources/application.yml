@@ -12,3 +12,8 @@ spring:
           auto: none
         format_sql: true
         show_sql: true
+  data:
+    redis:
+      host: <host>
+      port: <port>
+      password: <password>
