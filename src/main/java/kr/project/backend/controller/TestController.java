@@ -10,7 +10,7 @@ public class TestController {
     @Cacheable(value = "test")
     @GetMapping("/")
     public String get(){
-        return "마지막테스트22";
+        return "마지막테스트!";
     }
     @GetMapping("/api/v1/test")
     public String get2(){
