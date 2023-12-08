@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @Cacheable(value = "test")
+    //@Cacheable(value = "test")
     @GetMapping("/")
     public String get(){
         return "마지막테스트!";
