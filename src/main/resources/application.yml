@@ -15,5 +15,5 @@ spring:
   data:
     redis:
       host: <host>
-      port: <port>
+      port: 123
       password: <password>
