@@ -1,7 +1,6 @@
 package kr.project.backend.service;
 
 import kr.project.backend.dto.StakingInfoResponseDto;
-import kr.project.backend.entity.StakingInfo;
 import kr.project.backend.repository.StakingInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
