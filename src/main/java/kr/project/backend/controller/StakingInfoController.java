@@ -18,7 +18,7 @@ public class StakingInfoController {
 
     private final StakingInfoService stakingInfoService;
 
-    @Cacheable(value = "test")
+    //@Cacheable(value = "test")
     @GetMapping("/infos")
     public ResponseEntity<List<StakingInfoResponseDto>> stakingInfos(){
         return ResponseEntity.ok(stakingInfoService.getStakingInfos());
