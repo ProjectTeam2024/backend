@@ -1,4 +1,4 @@
-package kr.project.backend.entity;
+package kr.project.backend.user.coin.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

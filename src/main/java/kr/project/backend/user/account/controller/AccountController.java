@@ -5,7 +5,7 @@ import kr.project.backend.common.Environment;
 import kr.project.backend.common.Response;
 import kr.project.backend.user.account.model.UserToken;
 import kr.project.backend.user.account.service.AccountService;
-import kr.project.backend.user.common.model.User;
+import kr.project.backend.common.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

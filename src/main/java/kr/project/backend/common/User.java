@@ -1,4 +1,4 @@
-package kr.project.backend.user.common.model;
+package kr.project.backend.common;
 
 import lombok.Data;
 

@@ -1,10 +1,9 @@
-package kr.project.backend.controller;
+package kr.project.backend.user.coin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.project.backend.dto.StakingInfoResponseDto;
-import kr.project.backend.service.StakingInfoService;
+import kr.project.backend.user.coin.model.StakingInfoResponseDto;
+import kr.project.backend.user.coin.service.StakingInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

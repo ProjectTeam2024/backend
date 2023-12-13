@@ -2,7 +2,7 @@ package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
 import kr.project.backend.user.account.model.UserToken;
-import kr.project.backend.user.common.model.User;
+import kr.project.backend.common.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
