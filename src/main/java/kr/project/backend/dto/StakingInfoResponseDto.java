@@ -2,10 +2,13 @@ package kr.project.backend.dto;
 
 import kr.project.backend.entity.StakingInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class StakingInfoResponseDto implements Serializable {
     private UUID stakingId;
     private String coinName; //코인이름
