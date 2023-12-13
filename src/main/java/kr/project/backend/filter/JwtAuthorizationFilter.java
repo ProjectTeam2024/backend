@@ -1,19 +1,18 @@
 package kr.project.backend.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.project.backend.common.Environment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -23,16 +22,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        System.out.println("@@@@@@@ NO T111OKEN ::: ");
+        log.info("--- security jwt access ::: ");
 
         try {
             String headerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             String token = null;
+
+            //TODO jwt 인증후 SecurityContext 인증 객체 저장
+
         }catch (Exception e){
-            System.out.println("@@@@@@@ NO TOKEN ::: ");
+
+            //TODO jwt 인증 실패시 후처리
+
         }
 
         chain.doFilter(request,response);
-
     }
 }
