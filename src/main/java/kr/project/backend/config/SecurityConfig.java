@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
@@ -30,8 +31,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .httpBasic().disable()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/swagger-ui/**",
+                                         "/swagger-resources/**",
+                                         "/v3/api-docs/**",
                                          "/api/v1/account/login",
                                          "/api/v1/account/join",
                                          "/api/v1/staking/info", //임시
@@ -39,10 +43,26 @@ public class SecurityConfig {
                                         .permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
-                .httpBasic(withDefaults());
+                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
+
+    /*@Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .httpBasic().disable()
+                .csrf().disable()
+                .cors().and()
+                .authorizeRequests()
+                .requestMatchers("/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**","/api/v1/account/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                //
+                .build();
+    }*/
 
     /** cros 허용 */
     @Bean
