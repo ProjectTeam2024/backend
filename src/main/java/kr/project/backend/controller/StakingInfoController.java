@@ -1,5 +1,6 @@
 package kr.project.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.project.backend.dto.StakingInfoResponseDto;
 import kr.project.backend.service.StakingInfoService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class StakingInfoController {
 
     private final StakingInfoService stakingInfoService;
 
+    @Operation(summary = "코인 스테이킹 목록 조회", description = "코인 스테이킹 목록 조회를 합니다.")
     @GetMapping("/infos")
     public ResponseEntity<List<StakingInfoResponseDto>> stakingInfos(){
         return ResponseEntity.ok(stakingInfoService.getStakingInfos());

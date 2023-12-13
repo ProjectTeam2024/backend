@@ -1,5 +1,6 @@
 package kr.project.backend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import kr.project.backend.entity.StakingInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,21 +11,36 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class StakingInfoResponseDto implements Serializable {
+    @Schema(description = "키값",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
     private UUID stakingId;
-    private String coinName; //코인이름
-    private String annualRewardRate; //연 추정 보상률
-    private String stakingStatus; //스테이킹/언스테이킹 대기
-    private String rewardCycle; //보상주기
-    private String rewardRateForThreeMonth; //보상률 (3개월)
-    private String rewardRateForSixMonth; //보상률 (6개월)
-    private String rewardRateForOneYear; //보상률 (1년)
-    private String rewardRateForThreeYear; //보상률 (3년)
-    private String rewardRateTrendForThreeMonth; //보상률 변동 추세 (3개월)
-    private String rewardRateTrendForSixMonth; //보상률 변동 추세 (6개월)
-    private String rewardRateTrendForOneYear; //보상률 변동 추세 (1년)
-    private String rewardRateTrendForThreeYear; //보상률 변동 추세 (3년)
-    private String minimumOrderQuantity; // 최소신청수량
-    private String verificationFee; //검증인 수수료
+    @Schema(description = "코인이름",example = "폴리곤 (MATIC)")
+    private String coinName;
+    @Schema(description = "연 추정 보상률",example = "5.3%")
+    private String annualRewardRate;
+    @Schema(description = "스테이킹/언스테이킹 대기",example = "3시간 / 3일")
+    private String stakingStatus;
+    @Schema(description = "보상주기",example = "매일")
+    private String rewardCycle;
+    @Schema(description = "보상률 (3개월)",example = "보상률 최소 4.9% ~ 최대 5.5%")
+    private String rewardRateForThreeMonth;
+    @Schema(description = "보상률 (6개월)",example = "보상률 최소 4.9% ~ 최대 5.5%")
+    private String rewardRateForSixMonth;
+    @Schema(description = "보상률 (1년)",example = "보상률 최소 4.9% ~ 최대 5.5%")
+    private String rewardRateForOneYear;
+    @Schema(description = "보상률 (3년)",example = "보상률 최소 4.9% ~ 최대 5.5%")
+    private String rewardRateForThreeYear;
+    @Schema(description = "보상률 변동 추세 (3개월)",example = "좌표 값임(너무길어서 생략)")
+    private String rewardRateTrendForThreeMonth;
+    @Schema(description = "보상률 변동 추세 (6개월)",example = "좌표 값임(너무길어서 생략)")
+    private String rewardRateTrendForSixMonth;
+    @Schema(description = "보상률 변동 추세 (1년)",example = "좌표 값임(너무길어서 생략)")
+    private String rewardRateTrendForOneYear;
+    @Schema(description = "보상률 변동 추세 (3년)",example = "좌표 값임(너무길어서 생략)")
+    private String rewardRateTrendForThreeYear;
+    @Schema(description = "최소신청수량",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    private String minimumOrderQuantity;
+    @Schema(description = "검증인 수수료",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    private String verificationFee;
 
     public StakingInfoResponseDto(StakingInfo stakingInfo){
         this.stakingId = stakingInfo.getStakingId();
