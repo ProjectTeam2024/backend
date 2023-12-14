@@ -1,6 +1,7 @@
 package kr.project.backend.user.coin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.project.backend.common.Environment;
 import kr.project.backend.user.coin.model.StakingInfoResponseDto;
 import kr.project.backend.user.coin.service.StakingInfoService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/staking")
+@RequestMapping("/api/" + Environment.API_VERSION + "/staking")
 public class StakingInfoController {
 
     private final StakingInfoService stakingInfoService;
