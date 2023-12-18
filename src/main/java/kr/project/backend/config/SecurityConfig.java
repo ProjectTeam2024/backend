@@ -1,13 +1,14 @@
 package kr.project.backend.config;
 
 import kr.project.backend.filter.JwtAuthorizationFilter;
+import kr.project.backend.handler.CustomAccessDeniedHandler;
+import kr.project.backend.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
@@ -15,8 +16,6 @@ import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Slf4j
 @Configuration
@@ -26,12 +25,20 @@ public class SecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     /** HttpSecurity set */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler) //403 custom
+                .authenticationEntryPoint(customAuthenticationEntryPoint) //401 custom
+                .and()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/swagger-ui/**",
                                          "/swagger-resources/**",
@@ -44,7 +51,8 @@ public class SecurityConfig {
                                         .permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
+                ;
         return http.build();
     }
 
