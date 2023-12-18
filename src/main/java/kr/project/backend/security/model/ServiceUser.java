@@ -23,6 +23,12 @@ public class ServiceUser implements UserDetails {
     /** 이름 */
     private String mmbrNm;
 
+    /** token 만료시간 */
+    private String exp;
+
+    /** token 생성시간 */
+    private String iat;
+
     //security 기본
     private String password;
     private String userName;

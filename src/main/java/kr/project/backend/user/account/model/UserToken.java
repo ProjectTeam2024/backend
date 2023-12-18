@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserToken {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String wpayToken;
+    private String accessToken;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String wpayRefreshToken;
+    private String refreshToken;
 }
