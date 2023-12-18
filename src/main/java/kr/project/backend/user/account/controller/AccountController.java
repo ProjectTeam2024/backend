@@ -40,7 +40,7 @@ public class AccountController {
     public void test(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ServiceUser serviceUser = (ServiceUser) auth.getPrincipal();
-        log.info("security info ::: {}"+serviceUser);
+        log.info("security info ::: {} "+serviceUser);
     }
 
     
