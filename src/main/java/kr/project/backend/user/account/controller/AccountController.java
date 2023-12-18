@@ -3,11 +3,14 @@ package kr.project.backend.user.account.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.project.backend.common.Environment;
 import kr.project.backend.common.Response;
+import kr.project.backend.security.model.ServiceUser;
 import kr.project.backend.user.account.model.UserToken;
 import kr.project.backend.user.account.service.AccountService;
 import kr.project.backend.common.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,13 @@ public class AccountController {
     public Response<UserToken> login(@RequestBody User user){
         Response<UserToken> r = accountService.userLogin(user);
         return r;
+    }
+
+    @PostMapping("/test")
+    public void test(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ServiceUser serviceUser = (ServiceUser) auth.getPrincipal();
+        log.info("security info ::: {}"+serviceUser);
     }
 
     
