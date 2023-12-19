@@ -17,3 +17,5 @@ spring:
       host: <host>
       port: 123
       password: <password>
+jwt:
+  secretKey: <secretKey>
