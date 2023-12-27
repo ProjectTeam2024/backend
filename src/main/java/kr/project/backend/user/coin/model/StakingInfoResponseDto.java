@@ -40,6 +40,8 @@ public class StakingInfoResponseDto implements Serializable {
     private String minimumOrderQuantity;
     @Schema(description = "검증인 수수료",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
     private String verificationFee;
+    @Schema(description = "거래소",example = "업비트")
+    private CoinMarketType coinMarketType;
 
     public StakingInfoResponseDto(StakingInfo stakingInfo){
         this.stakingId = stakingInfo.getStakingId();
@@ -57,5 +59,6 @@ public class StakingInfoResponseDto implements Serializable {
         this.rewardRateTrendForThreeYear = stakingInfo.getRewardRateTrendForThreeYear();
         this.minimumOrderQuantity = stakingInfo.getMinimumOrderQuantity();
         this.verificationFee = stakingInfo.getVerificationFee();
+        this.coinMarketType = stakingInfo.getCoinMarketType();
     }
 }

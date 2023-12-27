@@ -1,9 +1,6 @@
 package kr.project.backend.user.coin.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,5 +37,7 @@ public class StakingInfo {
     private String rewardRateTrendForThreeYear; //보상률 변동 추세 (3년)
     private String minimumOrderQuantity; // 최소신청수량
     private String verificationFee; //검증인 수수료
+    @Enumerated(EnumType.STRING)
+    private CoinMarketType coinMarketType; //코인거래소 종류
 
 }
