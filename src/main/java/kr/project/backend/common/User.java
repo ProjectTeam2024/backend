@@ -1,5 +1,6 @@
 package kr.project.backend.common;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ public class User {
     private String mgtId;
 
     /** eamil */
+    @NotNull
     private String email;
 
     /** 이름 */
@@ -21,5 +23,17 @@ public class User {
 
     /** 패스워드 */
     private String password;
+
+    /** push token */
+    @NotNull
+    private String pushToken;
+
+    /** cino */
+    @NotNull
+    private String cino;
+
+    /** 생년월일 */
+    @NotNull
+    private String birth;
 
 }

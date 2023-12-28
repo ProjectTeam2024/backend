@@ -1,6 +1,7 @@
 package kr.project.backend.user.account.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import kr.project.backend.common.Environment;
 import kr.project.backend.common.Response;
 import kr.project.backend.security.model.ServiceUser;
@@ -31,7 +32,7 @@ public class AccountController {
 
     @Operation(summary = "일반 로그인",description = "일반 로그인 입니다. (소셜로그인 제외)")
     @PostMapping("/login")
-    public Response<UserToken> login(@RequestBody User user){
+    public Response<UserToken> login(@Valid @RequestBody User user){
         Response<UserToken> r = accountService.userLogin(user);
         return r;
     }
