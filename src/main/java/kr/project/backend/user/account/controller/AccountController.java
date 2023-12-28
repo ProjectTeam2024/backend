@@ -38,10 +38,11 @@ public class AccountController {
     }
 
     @PostMapping("/test")
-    public void test(){
+    public String test(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ServiceUser serviceUser = (ServiceUser) auth.getPrincipal();
         log.info("security info ::: {} "+serviceUser);
+        return "test";
     }
 
     
