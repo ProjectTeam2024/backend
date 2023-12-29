@@ -1,7 +1,7 @@
 package kr.project.backend.user.coin.service;
 
 import jakarta.transaction.Transactional;
-import kr.project.backend.user.coin.model.StakingInfoResponseDto;
+import kr.project.backend.user.coin.entity.StakingInfoResponseDto;
 import kr.project.backend.user.coin.repository.StakingInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;

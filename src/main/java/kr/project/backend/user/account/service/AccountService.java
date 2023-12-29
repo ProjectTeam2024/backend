@@ -1,8 +1,8 @@
 package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
-import kr.project.backend.user.account.model.UserToken;
-import kr.project.backend.user.account.model.User;
+import kr.project.backend.user.account.entity.UserToken;
+import kr.project.backend.user.account.entity.User;
 
 /**
  * 회원가입, 로그인 API serive interface

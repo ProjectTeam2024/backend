@@ -1,8 +1,8 @@
-package kr.project.backend.user.account.model;
+package kr.project.backend.user.account.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import kr.project.backend.user.coin.model.common.BaseTime;
+import kr.project.backend.user.coin.entity.common.BaseTime;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.Serializable;

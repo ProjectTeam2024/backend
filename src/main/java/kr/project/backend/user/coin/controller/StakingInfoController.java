@@ -3,7 +3,7 @@ package kr.project.backend.user.coin.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import kr.project.backend.common.Environment;
-import kr.project.backend.user.coin.model.StakingInfoResponseDto;
+import kr.project.backend.user.coin.entity.StakingInfoResponseDto;
 import kr.project.backend.user.coin.service.StakingInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package kr.project.backend.security.service;
 
 import kr.project.backend.security.model.ServiceUser;
-import kr.project.backend.user.account.model.User;
+import kr.project.backend.user.account.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

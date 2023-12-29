@@ -1,4 +1,4 @@
-package kr.project.backend.user.coin.model.common;
+package kr.project.backend.user.coin.entity.common;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

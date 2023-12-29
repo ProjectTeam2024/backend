@@ -1,7 +1,7 @@
-package kr.project.backend.user.coin.model;
+package kr.project.backend.user.coin.entity;
 
 import jakarta.persistence.*;
-import kr.project.backend.user.coin.model.common.BaseTime;
+import kr.project.backend.user.coin.entity.common.BaseTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
