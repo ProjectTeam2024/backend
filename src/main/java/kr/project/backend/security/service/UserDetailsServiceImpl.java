@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ServiceUser serviceUser = new ServiceUser();
 
         //TODO : 조회된 회원정보 세팅 필요(임시 데이터 set)
-        serviceUser.setMgtId("CS00000001");
+        serviceUser.setUserId("CS00000001");
         serviceUser.setUserName("홍길동");
         serviceUser.setEmail("test-user@eamil.com");
         serviceUser.setPassword("avanclkd213cmwk12nabyiwermzz");

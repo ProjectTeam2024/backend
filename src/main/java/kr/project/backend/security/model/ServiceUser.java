@@ -15,7 +15,7 @@ import java.util.Collection;
 public class ServiceUser implements UserDetails {
 
     /** 회원관리번호 */
-    private String mgtId;
+    private String userId;
 
     /** eamil */
     private String email;
