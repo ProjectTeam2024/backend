@@ -2,7 +2,7 @@ package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
 import kr.project.backend.user.account.model.UserToken;
-import kr.project.backend.common.User;
+import kr.project.backend.user.account.model.User;
 
 /**
  * 회원가입, 로그인 API serive interface

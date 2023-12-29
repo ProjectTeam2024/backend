@@ -45,7 +45,7 @@ public class SecurityConfig {
                                          "/v3/api-docs/**",
                                          "/api/v1/account/login",
                                          "/api/v1/account/join",
-                                         "/api/v1/staking/info", //임시
+                                         "/api/v1/staking/infos", //임시
                                          "/error",
                                          "/")
                                         .permitAll()

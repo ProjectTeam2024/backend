@@ -7,7 +7,7 @@ import kr.project.backend.common.Response;
 import kr.project.backend.security.model.ServiceUser;
 import kr.project.backend.user.account.model.UserToken;
 import kr.project.backend.user.account.service.AccountService;
-import kr.project.backend.common.User;
+import kr.project.backend.user.account.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
