@@ -1,4 +1,4 @@
-package kr.project.backend.user.account.entity;
+package kr.project.backend.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

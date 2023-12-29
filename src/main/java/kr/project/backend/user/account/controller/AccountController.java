@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import kr.project.backend.common.Environment;
 import kr.project.backend.common.Response;
 import kr.project.backend.security.model.ServiceUser;
-import kr.project.backend.user.account.entity.UserToken;
+import kr.project.backend.common.UserToken;
 import kr.project.backend.user.account.service.AccountService;
 import kr.project.backend.user.account.entity.User;
 import lombok.RequiredArgsConstructor;

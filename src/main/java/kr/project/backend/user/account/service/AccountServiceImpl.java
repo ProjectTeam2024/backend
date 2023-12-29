@@ -2,7 +2,7 @@ package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
 import kr.project.backend.security.model.ServiceUser;
-import kr.project.backend.user.account.entity.UserToken;
+import kr.project.backend.common.UserToken;
 import kr.project.backend.user.account.entity.User;
 import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
