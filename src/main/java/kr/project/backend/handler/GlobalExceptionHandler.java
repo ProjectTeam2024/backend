@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         Response<Void> r = new Response<>();
         r.setCode("9998");
         //r.setMsg("parameter 누락 ( "+e.getBindingResult().getFieldErrors().getFirst().getField()+" )");
-        r.setMsg("parameter 누락");
+        r.setMsg("parameter 누락 ");
 
         return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
     }
