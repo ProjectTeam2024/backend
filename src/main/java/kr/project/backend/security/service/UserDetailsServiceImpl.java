@@ -23,11 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 
         //TODO : 회원정보 조회 로직 필요
-        User user = new User();
+        /*User user = new User();
 
         if(user == null){
             new UsernameNotFoundException("user not find");
-        }
+        }*/
 
         ServiceUser serviceUser = new ServiceUser();
 
