@@ -48,13 +48,13 @@ public class ResponsBodyOutPutLoggingFilter implements ResponseBodyAdvice {
             try {
                 String logId = (String) servletRequestAttributes.getRequest().getAttribute("transaction_id");
                 String result =  mapper.writeValueAsString(body);
-                String mgtId =null;
+                String userId =null;
                 if( auth != null  && auth.getPrincipal()  != null  ) {
                     if( auth.getPrincipal() instanceof ServiceUser) {
                         ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
-                        mgtId = serviceUser.getMgtId();
+                        userId = serviceUser.getUserId();
                     }else{
-                        mgtId = "security 해제로 인한 no serviceUser";
+                        userId = "security 해제로 인한 no serviceUser";
                     }
                 }
 
@@ -71,7 +71,7 @@ public class ResponsBodyOutPutLoggingFilter implements ResponseBodyAdvice {
                 log.info("----> request Header ::: "+HttpRequestDataUtil.requestHeaderData(httpRequest));
                 log.info("----> request param ::: "+ mapper.readTree(cachingRequest.getContentAsByteArray()));
                 log.info("----> request logId::: "+logId);
-                log.info("----> request mgtId::: "+mgtId);
+                log.info("----> request userId::: "+userId);
                 log.info("----> request uri::: "+uri);
                 log.info("----> request client ip::: "+httpRequest.getRemoteAddr());
                 log.info("<---- response ::: "+result);
