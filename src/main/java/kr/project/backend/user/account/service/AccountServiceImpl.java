@@ -1,11 +1,10 @@
 package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
-import kr.project.backend.security.model.ServiceUser;
 import kr.project.backend.common.UserToken;
 import kr.project.backend.user.account.entity.RefreshToken;
 import kr.project.backend.user.account.entity.User;
-import kr.project.backend.user.account.repository.AccountRepository;
+import kr.project.backend.user.account.repository.UserRepository;
 import kr.project.backend.user.account.repository.RefreshTokenRepository;
 import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -35,7 +33,7 @@ public class AccountServiceImpl implements AccountService{
 
     private long refreshTokenTime = 600L;
 
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
 
@@ -46,11 +44,11 @@ public class AccountServiceImpl implements AccountService{
         String accessToken = null;
         String refreshToken = null;
 
-        User findUser = accountRepository.findByUserCino(user.getUserCino());
+        User findUser = userRepository.findByUserCino(user.getUserCino());
 
         if(findUser == null){
             //회원가입
-            UUID userId = accountRepository.save(user).getUserId();
+            UUID userId = userRepository.save(user).getUserId();
 
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
 
@@ -60,7 +58,7 @@ public class AccountServiceImpl implements AccountService{
             accessToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
             refreshToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
 
-            User userInfo = accountRepository.findById(userId).orElse(null);
+            User userInfo = userRepository.findById(userId).orElse(null);
             if(!ObjectUtils.isEmpty(userInfo)){
                 refreshTokenRepository.save(new RefreshToken(refreshToken,userInfo));
             }
