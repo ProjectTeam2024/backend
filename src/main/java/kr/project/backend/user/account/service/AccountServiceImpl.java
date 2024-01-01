@@ -1,5 +1,6 @@
 package kr.project.backend.user.account.service;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import kr.project.backend.common.Response;
 import kr.project.backend.common.UserToken;
 import kr.project.backend.user.account.entity.RefreshToken;
@@ -77,7 +78,6 @@ public class AccountServiceImpl implements AccountService{
             //리프레시 토큰 저장
             refreshTokenRepository.save(refreshTokenInfo);
 
-
             refreshTokenId = String.valueOf(refreshTokenInfo.getRefreshTokenId());
         }
 
@@ -96,19 +96,44 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public Response<UserToken> refreshAuthorize(RefreshToken refreshToken){
         Response<UserToken> r = new Response<>();
+        UserToken userToken = new UserToken();
 
-        //UserToken userToken = new UserToken();
+        String accessToken = null;
+        String newRefreshToken = null;
+        String refreshTokenId = null;
 
         //리프레시토큰키값으로 리프레시 토큰 조회
-        /*RefreshToken refreshTokenData = accountRepository.findByRefreshTokenId();
+        RefreshToken refreshTokenData = refreshTokenRepository.findByRefreshTokenId(refreshToken.getRefreshTokenId());
 
         if(refreshTokenData == null){
             r.setCode("8001");
             r.setMsg("유효하지 않는 토큰입니다.");
         }else{
-            
+            //회원정보
+            User userInfo = userRepository.findById(refreshTokenData.getUser().getUserId()).orElse(null);
+
+            //토큰 유효성검사
+            try {
+                JwtUtil.isExpired(refreshTokenData.getRefreshToken(), jwtSecretKey);
+            }catch (ExpiredJwtException e){
+                //만료시 refreshToken 재발급(db 업데이트)
+                newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(),userInfo.getUserEmail(),userInfo.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+
+                //리프레시 토큰 저장
+                refreshTokenRepository.save(new RefreshToken(newRefreshToken,userInfo));
+            }
+
+            //토큰 재발급
+            accessToken = JwtUtil.createJwt(userInfo.getUserId(),userInfo.getUserEmail(),userInfo.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
+            refreshTokenId = String.valueOf(refreshToken.getRefreshTokenId());
+            userToken.setAccessToken(accessToken);
+            userToken.setRefreshTokenId(refreshTokenId);
+
+            r.setCode("0000");
+            r.setMsg("success");
+            r.setResult(userToken);
         }
-        UserToken userToken = new UserToken();*/
+
         return r;
     }
 }

@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @Operation(summary = "accessToken 재발급",description = "refreshToken을 통해 accessToken을 재발급 합니다.")
-    @PostMapping("/refresh/authorize")
+    @GetMapping("/refresh/authorize")
     public Response<UserToken> refreshAuthorize(@Valid @RequestBody RefreshToken refreshToken){
         Response<UserToken> r = accountService.refreshAuthorize(refreshToken);
         return r;

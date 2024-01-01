@@ -28,7 +28,6 @@ public class RefreshToken extends BaseTime implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
 
     public RefreshToken(String refreshToken, User userInfo) {
