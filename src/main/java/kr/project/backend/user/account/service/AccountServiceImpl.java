@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService{
 
             RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(findUser);
 
-            refreshTokenInfo.updateRefresToken(refreshToken);
+            refreshTokenInfo.updateRefreshToken(refreshToken);
             //리프레시 토큰 저장
             refreshTokenRepository.save(refreshTokenInfo);
 

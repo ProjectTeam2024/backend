@@ -36,7 +36,9 @@ public class RefreshToken extends BaseTime implements Serializable {
         this.user = userInfo;
     }
 
-    public void updateRefresToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken) {
         this.refreshToken =refreshToken;
     }
+
+
 }
