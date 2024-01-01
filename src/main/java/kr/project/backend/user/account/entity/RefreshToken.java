@@ -28,4 +28,8 @@ public class RefreshToken extends BaseTime implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public RefreshToken(String refreshToken, User userInfo) {
+        this.refreshToken =refreshToken;
+        this.user = userInfo;
+    }
 }

@@ -6,11 +6,16 @@ import kr.project.backend.common.UserToken;
 import kr.project.backend.user.account.entity.RefreshToken;
 import kr.project.backend.user.account.entity.User;
 import kr.project.backend.user.account.repository.AccountRepository;
+import kr.project.backend.user.account.repository.RefreshTokenRepository;
 import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 회원가입, 로그인 API seriveImpl
@@ -31,6 +36,8 @@ public class AccountServiceImpl implements AccountService{
     private long refreshTokenTime = 600L;
 
     private final AccountRepository accountRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+
 
     @Override
     public Response<UserToken> userLogin(User user) {
@@ -43,20 +50,20 @@ public class AccountServiceImpl implements AccountService{
 
         if(findUser == null){
             //회원가입
-            accountRepository.save(user);
-
-            User joinUserData = accountRepository.findByUserCino(user.getUserCino());
+            UUID userId = accountRepository.save(user).getUserId();
 
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
-
-            //TODO
-            //RefreshToken set
 
             //accountRepository.save()
             //RefreshToken refreshTokenData = accountRepository.findByUserId(joinUserData.getUserId());
 
-            accessToken = JwtUtil.createJwt(joinUserData.getUserId(),user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
-            refreshToken = JwtUtil.createJwt(joinUserData.getUserId(),user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+            accessToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
+            refreshToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+
+            User userInfo = accountRepository.findById(userId).orElse(null);
+            if(!ObjectUtils.isEmpty(userInfo)){
+                refreshTokenRepository.save(new RefreshToken(refreshToken,userInfo));
+            }
         }else{
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
             accessToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
