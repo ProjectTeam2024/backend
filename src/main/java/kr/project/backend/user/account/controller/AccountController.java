@@ -1,6 +1,9 @@
 package kr.project.backend.user.account.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.project.backend.common.Environment;
 import kr.project.backend.common.Response;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
  * @author kh
  * @version v1.0
  */
+
+@Tag(name = "account", description = "로그인 / 회원가입")
 @Slf4j
 @RestController
 @RequestMapping("/api/" + Environment.API_VERSION + "/account")
@@ -36,7 +41,7 @@ public class AccountController {
     }
 
     @Operation(summary = "accessToken 재발급",description = "refreshToken을 통해 accessToken을 재발급 합니다.")
-    @GetMapping("/refresh/authorize")
+    @PostMapping("/refresh/authorize")
     public Response<UserToken> refreshAuthorize(@Valid @RequestBody RefreshToken refreshToken){
         Response<UserToken> r = accountService.refreshAuthorize(refreshToken);
         return r;

@@ -2,6 +2,7 @@ package kr.project.backend.user.coin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.project.backend.common.Environment;
 import kr.project.backend.user.coin.entity.StakingInfoResponseDto;
 import kr.project.backend.user.coin.service.StakingInfoService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "staking", description = "스테이킹")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/" + Environment.API_VERSION + "/staking")

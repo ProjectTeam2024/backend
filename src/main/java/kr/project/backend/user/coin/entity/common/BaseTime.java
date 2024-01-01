@@ -1,5 +1,6 @@
 package kr.project.backend.user.coin.entity.common;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
@@ -18,9 +19,11 @@ import java.time.format.DateTimeFormatter;
 public class BaseTime {
 
     @CreatedDate
+    @Schema(hidden = true)
     private String createdDate;
 
     @LastModifiedDate
+    @Schema(hidden = true)
     private String modifiedDate;
 
     @PrePersist
