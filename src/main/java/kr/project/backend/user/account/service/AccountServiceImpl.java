@@ -43,6 +43,7 @@ public class AccountServiceImpl implements AccountService{
 
         String accessToken = null;
         String refreshToken = null;
+        String refreshTokenId = null;
 
         User findUser = userRepository.findByUserCino(user.getUserCino());
 
@@ -51,32 +52,61 @@ public class AccountServiceImpl implements AccountService{
             UUID userId = userRepository.save(user).getUserId();
 
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
-
-            //accountRepository.save()
-            //RefreshToken refreshTokenData = accountRepository.findByUserId(joinUserData.getUserId());
-
             accessToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
             refreshToken = JwtUtil.createJwt(userId,user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
 
             User userInfo = userRepository.findById(userId).orElse(null);
+
             if(!ObjectUtils.isEmpty(userInfo)){
+                //리프레시 토큰 저장
                 refreshTokenRepository.save(new RefreshToken(refreshToken,userInfo));
             }
+
+            RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo);
+
+            refreshTokenId = String.valueOf(refreshTokenInfo.getRefreshTokenId());
+
         }else{
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
             accessToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
             refreshToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+
+            //리프레시 토큰 저장
+            refreshTokenRepository.save(new RefreshToken(refreshToken,findUser));
+
+            RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(findUser);
+
+            refreshTokenId = String.valueOf(refreshTokenInfo.getRefreshTokenId());
         }
 
         UserToken userToken = new UserToken();
 
         userToken.setAccessToken(accessToken);
-        userToken.setRefreshToken(refreshToken);
+        userToken.setRefreshTokenId(refreshTokenId);
 
         r.setCode("0000");
         r.setMsg("success");
         r.setResult(userToken);
 
+        return r;
+    }
+
+    @Override
+    public Response<UserToken> refreshAuthorize(RefreshToken refreshToken){
+        Response<UserToken> r = new Response<>();
+
+        //UserToken userToken = new UserToken();
+
+        //리프레시토큰키값으로 리프레시 토큰 조회
+        /*RefreshToken refreshTokenData = accountRepository.findByRefreshTokenId();
+
+        if(refreshTokenData == null){
+            r.setCode("8001");
+            r.setMsg("유효하지 않는 토큰입니다.");
+        }else{
+            
+        }
+        UserToken userToken = new UserToken();*/
         return r;
     }
 }

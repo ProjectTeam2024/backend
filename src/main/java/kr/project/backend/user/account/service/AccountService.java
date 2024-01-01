@@ -2,6 +2,7 @@ package kr.project.backend.user.account.service;
 
 import kr.project.backend.common.Response;
 import kr.project.backend.common.UserToken;
+import kr.project.backend.user.account.entity.RefreshToken;
 import kr.project.backend.user.account.entity.User;
 
 /**
@@ -12,4 +13,6 @@ import kr.project.backend.user.account.entity.User;
 public interface AccountService {
 
     Response<UserToken> userLogin(User user);
+
+    Response<UserToken> refreshAuthorize(RefreshToken refreshToken);
 }

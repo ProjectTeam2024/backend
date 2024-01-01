@@ -9,5 +9,5 @@ public class UserToken {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String accessToken;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String refreshToken;
+    private String refreshTokenId;
 }
