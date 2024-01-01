@@ -71,10 +71,12 @@ public class AccountServiceImpl implements AccountService{
             accessToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
             refreshToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
 
-            //리프레시 토큰 저장
-            refreshTokenRepository.save(new RefreshToken(refreshToken,findUser));
-
             RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(findUser);
+
+            refreshTokenInfo.updateRefresToken(refreshToken);
+            //리프레시 토큰 저장
+            refreshTokenRepository.save(refreshTokenInfo);
+
 
             refreshTokenId = String.valueOf(refreshTokenInfo.getRefreshTokenId());
         }
