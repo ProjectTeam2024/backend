@@ -3,7 +3,9 @@ package kr.project.backend.user.account.service;
 import kr.project.backend.common.Response;
 import kr.project.backend.security.model.ServiceUser;
 import kr.project.backend.common.UserToken;
+import kr.project.backend.user.account.entity.RefreshToken;
 import kr.project.backend.user.account.entity.User;
+import kr.project.backend.user.account.repository.AccountRepository;
 import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,17 +25,45 @@ public class AccountServiceImpl implements AccountService{
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
     private long expiredMs = 1000 * 60;
+
+    private long accesTokenTime = 5L;
+
+    private long refreshTokenTime = 600L;
+
+    private final AccountRepository accountRepository;
+
     @Override
     public Response<UserToken> userLogin(User user) {
         Response<UserToken> r = new Response<>();
 
-        //TODO 회원 검증로직 추가
-        ServiceUser serviceUser = new ServiceUser();
+        String accessToken = null;
+        String refreshToken = null;
+
+        User findUser = accountRepository.findByUserCino(user.getUserCino());
+
+        if(findUser == null){
+            //회원가입
+            accountRepository.save(user);
+
+            User joinUserData = accountRepository.findByUserCino(user.getUserCino());
+
+            //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
+
+            //TODO
+            //RefreshToken set
+
+            //accountRepository.save()
+            //RefreshToken refreshTokenData = accountRepository.findByUserId(joinUserData.getUserId());
+
+            accessToken = JwtUtil.createJwt(joinUserData.getUserId(),user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
+            refreshToken = JwtUtil.createJwt(joinUserData.getUserId(),user.getUserEmail(),user.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+        }else{
+            //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
+            accessToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*accesTokenTime);
+            refreshToken = JwtUtil.createJwt(findUser.getUserId(),findUser.getUserEmail(),findUser.getUserName(), jwtSecretKey, expiredMs*refreshTokenTime);
+        }
 
         UserToken userToken = new UserToken();
-
-        String accessToken = JwtUtil.createJwt("CS00000001","testmail@naver.com","홍길동", jwtSecretKey, expiredMs*5L);
-        String refreshToken = JwtUtil.createJwt("CS00000001","testmail@naver.com","홍길동", jwtSecretKey, expiredMs*600L);
 
         userToken.setAccessToken(accessToken);
         userToken.setRefreshToken(refreshToken);

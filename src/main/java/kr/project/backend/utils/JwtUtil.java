@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import kr.project.backend.security.model.ServiceUser;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class JwtUtil {
 
@@ -30,11 +31,11 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token)
                     .getBody().getExpiration().before(new Date());
     }
-    public static String createJwt(String userId, String email, String userName, String secretKey, Long expiredMs){
+    public static String createJwt(UUID userId, String userEmail, String userName, String secretKey, Long expiredMs){
         Claims claIms = Jwts.claims();
         claIms.put("userId",userId);
         claIms.put("mmbrNm", userName);
-        claIms.put("email",email);
+        claIms.put("userEmail",userEmail);
 
         return Jwts.builder()
                 .setClaims(claIms)

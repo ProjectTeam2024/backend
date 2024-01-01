@@ -32,6 +32,7 @@ public class User extends BaseTime implements Serializable {
     private String userEmail;
 
     /** 이름 */
+    @NotNull
     private String userName;
 
     /** 패스워드 */
