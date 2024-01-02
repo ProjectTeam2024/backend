@@ -122,20 +122,12 @@ public class UserService {
 
     @Transactional
     public UserTokenResponseDto test() {
+        String cino = "123321321";
 
-        String accessToken = "11111";
-        String refreshTokenId = "22222";
-
-        //예측하지 못한에러 예시
-        String sizeStr = null;
-        int sizeInt = 10;
-        try {
-            int test = Integer.parseInt(sizeStr) / sizeInt;
-        }catch (Exception e){
-            log.info("에러 발생 -> httpstatus 200 but api자체는 실패");
-        }
+        User user = userRepository.findByUserCino(cino)
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
 
-        return new UserTokenResponseDto(accessToken, refreshTokenId);
+        return new UserTokenResponseDto();
     }
 }

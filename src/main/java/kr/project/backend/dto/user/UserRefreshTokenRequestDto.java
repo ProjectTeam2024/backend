@@ -1,5 +1,4 @@
 package kr.project.backend.dto.user;
-
 import lombok.Data;
 
 import java.util.UUID;
