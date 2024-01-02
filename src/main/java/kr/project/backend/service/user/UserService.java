@@ -119,15 +119,5 @@ public class UserService {
 
         return new UserTokenResponseDto(accessToken, refreshTokenId);
     }
-
-    @Transactional
-    public UserTokenResponseDto test() {
-        String cino = "123321321";
-
-        User user = userRepository.findByUserCino(cino)
-                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
-
-
-        return new UserTokenResponseDto();
-    }
+    
 }

@@ -43,10 +43,5 @@ public class UserController {
     public ResponseEntity<?> refreshAuthorize(@Valid @RequestBody UserRefreshTokenRequestDto userRefreshTokenRequestDto){
         return ObjectResult.build(userService.refreshAuthorize(userRefreshTokenRequestDto));
     }
-
-    @PostMapping("/test")
-    public ResponseEntity<?> test(){
-        return ObjectResult.build(userService.test());
-    }
     
 }
