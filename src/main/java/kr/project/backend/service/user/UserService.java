@@ -86,6 +86,8 @@ public class UserService {
         //dirty checking 으로 인한 리프레시토큰 업데이트
         refreshTokenInfo.updateRefreshToken(refreshToken);
 
+        refreshTokenRepository.save(refreshTokenInfo);
+
         return new UserTokenResponseDto(accessToken, String.valueOf(refreshTokenInfo.getRefreshTokenId()));
     }
 
@@ -108,7 +110,7 @@ public class UserService {
             String newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
 
             //리프레시 토큰 저장
-            refreshTokenRepository.save(new RefreshToken(newRefreshToken, userInfo));
+            refreshToken.updateRefreshToken(newRefreshToken);
         }
 
         //토큰 재발급
