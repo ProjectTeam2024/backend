@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -61,9 +62,23 @@ public class User extends BaseTimeEntity implements Serializable {
     @Schema(description = "생년월일" , example = "19940810")
     private String userBirth;
 
+    /** 회원상태 */
+    @NotNull
+    @Schema(description = "회원상태" , example = "01")
+    private String userState;
+
+    /** 로그아웃 일시 */
+    @NotNull
+    @Schema(description = "로그아웃 일시" , example = "2024-01-02 20:00:11")
+    private String userLogoutDttm;
+
     @OneToOne(mappedBy = "user")
     @Schema(hidden = true)
     private RefreshToken refreshToken;
+
+    @OneToMany(mappedBy = "user")
+    @Schema(hidden = true)
+    private List<DropUser> dropUser;
 
     public User(UserLoginRequestDto userLoginRequestDto){
         this.userEmail = userLoginRequestDto.getUserEmail();
@@ -72,5 +87,21 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userPushToken = userLoginRequestDto.getUserPushToken();
         this.userCino = userLoginRequestDto.getUserCino();
         this.userBirth = userLoginRequestDto.getUserBirth();
+        this.userState = userLoginRequestDto.getUserState();
+        this.userLogoutDttm = userLoginRequestDto.getUserLogoutDttm();
+    }
+
+    public void updateUserLogoutDttm(String userLogoutDttm) {
+        this.userLogoutDttm = userLogoutDttm;
+    }
+
+    public void updateUserDrop(UserLoginRequestDto userLoginRequestDto) {
+        this.userEmail = userLoginRequestDto.getUserEmail();
+        this.userName = userLoginRequestDto.getUserName();
+        this.userPassword = userLoginRequestDto.getUserPassword();
+        this.userPushToken = userLoginRequestDto.getUserPushToken();
+        this.userCino = userLoginRequestDto.getUserCino();
+        this.userBirth = userLoginRequestDto.getUserBirth();
+        this.userState = userLoginRequestDto.getUserState();
     }
 }

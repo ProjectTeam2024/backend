@@ -2,10 +2,14 @@ package kr.project.backend.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class UserLoginRequestDto {
+
+    @Schema(description = "회원관리번호", example = "33669090-cc33-401d-973f-32df9b0787d4", hidden = true)
+    private String userId;
 
     @Schema(description = "이메일", example = "test@test.com")
     private String userEmail;
@@ -28,4 +32,10 @@ public class UserLoginRequestDto {
     @NotBlank(message = "생일일자를 넣어주세요.")
     @Schema(description = "생일일자", example = "19900315")
     private String userBirth;
+
+    @Schema(description = "회원상태", example = "01")
+    private String userState;
+
+    @Schema(description = "로그아웃 일시", example = "2024-01-02 20:00:11", hidden = true)
+    private String userLogoutDttm;
 }

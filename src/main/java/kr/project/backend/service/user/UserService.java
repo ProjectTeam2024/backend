@@ -1,24 +1,33 @@
 package kr.project.backend.service.user;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import kr.project.backend.common.ResponseEntity;
+import kr.project.backend.auth.ServiceUser;
+import kr.project.backend.common.Constants;
 import kr.project.backend.dto.user.UserLoginRequestDto;
 import kr.project.backend.dto.user.UserRefreshTokenRequestDto;
 import kr.project.backend.dto.user.UserTokenResponseDto;
+import kr.project.backend.entity.user.DropUser;
 import kr.project.backend.entity.user.RefreshToken;
 import kr.project.backend.entity.user.User;
 import kr.project.backend.exception.CommonErrorCode;
 import kr.project.backend.exception.CommonException;
+import kr.project.backend.repository.user.DropUserRepository;
 import kr.project.backend.repository.user.UserRepository;
 import kr.project.backend.repository.user.RefreshTokenRepository;
 import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -40,25 +49,47 @@ public class UserService {
 
     private final long refreshTokenTime = 600L;
 
+    private final Integer reJoinTermDate = 30;
+
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final DropUserRepository dropUserRepository;
 
-
-    @Transactional
     public UserTokenResponseDto userLogin(UserLoginRequestDto userLoginRequestDto) {
-
 
         //등록되어 있는 유저인지 아닌지 판단
         boolean checkUserInfo = userRepository.existsByUserCino(userLoginRequestDto.getUserCino());
 
         //등록되어 있지 않는 유저
         if (!checkUserInfo) {
+            //회원가입 1달 제한 정책 체크
+            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino());
+
+            if(dropCheck != null){
+                try {
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date dropDate = transFormat.parse(dropCheck.getDropDttm());
+                    Date nowDate = transFormat.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+                    Long dropAndJoinTerm = (nowDate.getTime() - dropDate.getTime()) / 1000 / (24*60*60);
+
+                    if(reJoinTermDate > dropAndJoinTerm.intValue()){
+                        throw new CommonException(CommonErrorCode.JOIN_TERM_DATE.getCode(),CommonErrorCode.JOIN_TERM_DATE.getMessage());
+                    }
+                }catch (ParseException e){
+                    log.info("date 변환 파싱 error");
+                }
+            }
+
             //회원가입
+            userLoginRequestDto.setUserState(Constants.USER_STATE.ACTIVE_USER);
+            userLoginRequestDto.setUserLogoutDttm("");
             UUID userId = userRepository.save(new User(userLoginRequestDto)).getUserId();
 
-            //방금 회원가입 된 유저 정보 가져오기.
+            //방금 회원가입 된 유저 정보 가져오기
             User userInfo = userRepository.findById(userId)
                     .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
             String accessToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
             String refreshToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
@@ -91,7 +122,6 @@ public class UserService {
         return new UserTokenResponseDto(accessToken, String.valueOf(refreshTokenInfo.getRefreshTokenId()));
     }
 
-    @Transactional
     public UserTokenResponseDto refreshAuthorize(UserRefreshTokenRequestDto userRefreshTokenRequestDto) {
 
         //리프레시토큰키값으로 리프레시 토큰 조회
@@ -118,6 +148,62 @@ public class UserService {
         String refreshTokenId = String.valueOf(refreshToken.getRefreshTokenId());
 
         return new UserTokenResponseDto(accessToken, refreshTokenId);
+    }
+
+    public void logout() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
+
+        //회원정보
+        User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+        //로그아웃시간 업데이트
+        userInfo.updateUserLogoutDttm(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        userRepository.save(userInfo);
+    }
+
+    public void dropUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
+
+        //회원정보
+        User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+        //탈퇴 중복 처리 방어로직
+        if(userInfo.getUserState().equals(Constants.USER_STATE.DROP_USER)){
+            throw new CommonException(CommonErrorCode.ALREADY_DROP_USER.getCode(), CommonErrorCode.ALREADY_DROP_USER.getMessage());
+        }
+
+        String userCino = userInfo.getUserCino();
+        UUID userId = userInfo.getUserId();
+
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(userInfo)
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_TOKEN.getCode(), CommonErrorCode.NOT_FOUND_TOKEN.getMessage()));
+
+        //기본 정보 날리고 회원상태 업데이트
+        UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto();
+        userLoginRequestDto.setUserId(String.valueOf(userId));
+        userLoginRequestDto.setUserEmail("");
+        userLoginRequestDto.setUserName("");
+        userLoginRequestDto.setUserPassword("");
+        userLoginRequestDto.setUserPushToken("");
+        userLoginRequestDto.setUserCino("");
+        userLoginRequestDto.setUserBirth("");
+        userLoginRequestDto.setUserState(Constants.USER_STATE.DROP_USER);
+        userLoginRequestDto.setUserLogoutDttm(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        userInfo.updateUserDrop(userLoginRequestDto);
+
+        userRepository.save(userInfo);
+
+        //탈퇴 테이블 저장
+        dropUserRepository.save(new DropUser(userCino, userInfo));
+
+        //리프레시 테이블 삭제
+        refreshTokenRepository.delete(refreshToken);
     }
     
 }

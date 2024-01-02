@@ -43,5 +43,19 @@ public class UserController {
     public ResponseEntity<?> refreshAuthorize(@Valid @RequestBody UserRefreshTokenRequestDto userRefreshTokenRequestDto){
         return ObjectResult.build(userService.refreshAuthorize(userRefreshTokenRequestDto));
     }
+
+    @Operation(summary = "로그아웃",description = "로그아웃 입니다.")
+    @PostMapping("/user/logout")
+    public ResponseEntity<?> logout(){
+        userService.logout();
+        return ObjectResult.ok();
+    }
+
+    @Operation(summary = "회원탈퇴",description = "회원탈퇴 입니다.")
+    @PostMapping("/user/drop")
+    public ResponseEntity<?> dropUser(){
+        userService.dropUser();
+        return ObjectResult.ok();
+    }
     
 }

@@ -20,6 +20,9 @@ public class ServiceUser implements UserDetails {
     /** eamil */
     private String userEmail;
 
+    /** cino */
+    private String userCino;
+
     /** token 만료시간 */
     private String exp;
 
