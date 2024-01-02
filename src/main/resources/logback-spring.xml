@@ -11,7 +11,7 @@
     <property name="LOG_FILE_NAME" value="serviceLog"/>
 
     <!-- 로그 출력 패턴 -->
-    <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+    <property name="LOG_PATTERN" value="[%-5level%d{yyyy-MM-dd HH:mm:ss} %logger{0}:%line] - %msg%n"/>
 
     <!-- 로그 레벨 -->
     <property name="LOG_LEVEL" value="info"/>
