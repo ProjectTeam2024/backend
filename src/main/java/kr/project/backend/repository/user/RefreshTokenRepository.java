@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {
 
-    RefreshToken findByUser(User userInfo);
+    Optional<RefreshToken> findByUser(User userInfo);
 
     Optional<RefreshToken> findByRefreshTokenId(UUID refreshTokenId);
 }

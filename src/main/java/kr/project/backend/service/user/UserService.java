@@ -66,7 +66,8 @@ public class UserService {
             //리프레시 토큰 저장
             refreshTokenRepository.save(new RefreshToken(refreshToken, userInfo));
 
-            RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo);
+            RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
+                    .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_EXIST_TOKEN.getCode(), CommonErrorCode.NOT_EXIST_TOKEN.getMessage()));
 
             return new UserTokenResponseDto(accessToken, String.valueOf(refreshTokenInfo.getRefreshTokenId()));
         }
@@ -79,7 +80,8 @@ public class UserService {
         String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
         String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
 
-        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo);
+        RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_EXIST_TOKEN.getCode(), CommonErrorCode.NOT_EXIST_TOKEN.getMessage()));
 
         //dirty checking 으로 인한 리프레시토큰 업데이트
         refreshTokenInfo.updateRefreshToken(refreshToken);
