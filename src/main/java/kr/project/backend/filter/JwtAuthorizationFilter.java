@@ -7,7 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.project.backend.common.Environment;
-import kr.project.backend.security.model.ServiceUser;
+import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

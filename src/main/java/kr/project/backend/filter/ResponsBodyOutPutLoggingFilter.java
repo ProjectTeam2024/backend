@@ -2,7 +2,7 @@ package kr.project.backend.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.project.backend.security.model.ServiceUser;
+import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.utils.HttpRequestDataUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

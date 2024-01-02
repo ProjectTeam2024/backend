@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import kr.project.backend.security.model.ServiceUser;
+import kr.project.backend.auth.ServiceUser;
 
 import java.util.Date;
 import java.util.UUID;

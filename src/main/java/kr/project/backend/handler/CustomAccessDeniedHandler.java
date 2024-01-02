@@ -3,7 +3,7 @@ package kr.project.backend.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.project.backend.common.Response;
+import kr.project.backend.common.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,7 +21,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Response<Void> r = new Response<>();
+        ResponseEntity<Void> r = new ResponseEntity<>();
         r.setCode("403");
         r.setMsg("인증이 부족합니다.");
 

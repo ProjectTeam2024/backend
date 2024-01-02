@@ -3,7 +3,7 @@ package kr.project.backend.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.project.backend.common.Response;
+import kr.project.backend.common.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -22,7 +22,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Response<Void> r = new Response<>();
+        ResponseEntity<Void> r = new ResponseEntity<>();
         r.setCode("401");
         r.setMsg("권한이 부족합니다.");
 
