@@ -3,8 +3,8 @@
 
     <!-- 로그 파일이 저장될 경로 -->
     <!--<property name="LOG_PATH" value="/Users//Desktop/javaPjt"/>-->
-    <!--<property name="LOG_PATH" value="/app/project/logs"/>-->
-    <property name="LOG_PATH" value="/Users/yjkim-mtn/desktop"/>
+    <property name="LOG_PATH" value="/app/project/logs"/>
+    <!--<property name="LOG_PATH" value="/Users/yjkim-mtn/desktop"/>-->
 
 
     <!-- 로그 파일 이름 -->
