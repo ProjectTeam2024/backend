@@ -32,8 +32,8 @@ public class ApiControllerAdvice {
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
 
         ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
-        apiResponseMessage.setStatus("FAIL");
-        apiResponseMessage.setMessage("실패");
+        apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+        apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
         apiResponseMessage.setErrorCode(CommonErrorCode.COMMON_FAIL.getCode());
         apiResponseMessage.setErrorMessage(new Gson().toJson(errors));
         return ResponseEntity.badRequest().body(apiResponseMessage);
@@ -46,8 +46,8 @@ public class ApiControllerAdvice {
     @ExceptionHandler(CommonException.class)
     public ResponseEntity<ApiResponseMessage> handleValidationExceptions(CommonException ex){
         ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
-        apiResponseMessage.setStatus("FAIL");
-        apiResponseMessage.setMessage("실패");
+        apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+        apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
         apiResponseMessage.setErrorCode(ex.getCode());
         apiResponseMessage.setErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponseMessage);
@@ -56,8 +56,8 @@ public class ApiControllerAdvice {
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<ApiResponseMessage> handleValidationExceptions(JwtException ex){
         ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
-        apiResponseMessage.setStatus("FAIL");
-        apiResponseMessage.setMessage("실패");
+        apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+        apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
         apiResponseMessage.setErrorCode(ex.getCode());
         apiResponseMessage.setErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponseMessage);

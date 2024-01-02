@@ -18,10 +18,7 @@ public class ServiceUser implements UserDetails {
     private String userId;
 
     /** eamil */
-    private String email;
-
-    /** 이름 */
-    private String mmbrNm;
+    private String userEmail;
 
     /** token 만료시간 */
     private String exp;

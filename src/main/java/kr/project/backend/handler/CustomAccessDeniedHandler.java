@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.project.backend.common.ResponseEntity;
+import kr.project.backend.dto.common.ApiResponseMessage;
+import kr.project.backend.exception.CommonErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,14 +23,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        ResponseEntity<Void> r = new ResponseEntity<>();
-        r.setCode("403");
-        r.setMsg("인증이 부족합니다.");
+        ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
+        apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+        apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
+        apiResponseMessage.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
+        apiResponseMessage.setErrorMessage(HttpStatus.FORBIDDEN.getReasonPhrase());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(r));
+        response.getWriter().write(objectMapper.writeValueAsString(apiResponseMessage));
 
     }
 }

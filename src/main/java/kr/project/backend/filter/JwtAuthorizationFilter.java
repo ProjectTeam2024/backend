@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.project.backend.common.Environment;
 import kr.project.backend.auth.ServiceUser;
+import kr.project.backend.dto.common.ApiResponseMessage;
+import kr.project.backend.exception.CommonErrorCode;
 import kr.project.backend.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,29 +74,37 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }catch (ExpiredJwtException e){
 
-            Map<String,String> res = new LinkedHashMap<>();
+            ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
+            apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+            apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
+            apiResponseMessage.setErrorCode(CommonErrorCode.EXPIRED_TOKEN.getCode());
+            apiResponseMessage.setErrorMessage(CommonErrorCode.EXPIRED_TOKEN.getMessage());
+
             ObjectMapper objectMapper = new ObjectMapper();
 
-            res.put("code","8000");
-            res.put("msg","토큰이 만료되었습니다.");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print(objectMapper.writeValueAsString(res));
+            response.getWriter().print(objectMapper.writeValueAsString(apiResponseMessage));
             response.flushBuffer();
-            return;
+
+            return ;
 
         }catch (Exception e){
 
-            /*Map<String,String> res = new LinkedHashMap<>();
+            ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
+            apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+            apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
+            apiResponseMessage.setErrorCode(CommonErrorCode.COMMON_FAIL.getCode());
+            apiResponseMessage.setErrorMessage(CommonErrorCode.COMMON_FAIL.getMessage());
+
             ObjectMapper objectMapper = new ObjectMapper();
 
-            res.put("code","9999");
-            res.put("msg","server error 발생");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print(objectMapper.writeValueAsString(res));
+            response.getWriter().print(objectMapper.writeValueAsString(apiResponseMessage));
             response.flushBuffer();
-            return;*/
+
+            return;
 
         }
 

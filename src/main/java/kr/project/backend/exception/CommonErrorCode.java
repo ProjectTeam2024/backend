@@ -3,7 +3,10 @@ package kr.project.backend.exception;
 
 public enum CommonErrorCode {
     // common
+    SUCCESS("SUCCESS", "정상처리"),
+    FAIL("FAIL", "실패"),
     COMMON_FAIL("A000", "실패"),
+
     // token
     EXPIRED_TOKEN("BOOO","만료된 토큰입니다."),
     WRONG_TOKEN("B001","형식이 잘못된 토큰입니다."),

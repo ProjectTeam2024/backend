@@ -18,10 +18,10 @@ public class ApiResponseMessage {
     private String status;
     @Schema(description = "처리 메시지", example = "정상처리")
     private String message;
-    @Schema(description = "에러 메시지", example = "null")
-    private String errorMessage;
     @Schema(description = "에러 코드", example = "null")
     private String errorCode;
+    @Schema(description = "에러 메시지", example = "null")
+    private String errorMessage;
     @Schema(description = "결과")
     private Object result;
 
@@ -33,14 +33,14 @@ public class ApiResponseMessage {
     }
 
     public ApiResponseMessage(ApiResult result){
-        this.status = "SUCCESS";
-        this.message = "정상처리";
+        this.status = CommonErrorCode.SUCCESS.getCode();
+        this.message = CommonErrorCode.SUCCESS.getMessage();
         this.result = result;
     }
 
     public ApiResponseMessage(List<?> result){
-        this.status = "SUCCESS";
-        this.message = "정상처리";
+        this.status = CommonErrorCode.SUCCESS.getCode();
+        this.message = CommonErrorCode.SUCCESS.getMessage();
         this.result = result;
     }
     public void setError(CommonErrorCode errorCode) {

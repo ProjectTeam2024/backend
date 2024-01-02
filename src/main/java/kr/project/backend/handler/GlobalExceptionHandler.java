@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         r.setMsg("server error 발생");
 
         return new org.springframework.http.ResponseEntity<>(r, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public org.springframework.http.ResponseEntity<ResponseEntity<Void>> bindExceptionHandler(HttpServletRequest httpServletRequest, MethodArgumentNotValidException e){
@@ -35,6 +35,6 @@ public class GlobalExceptionHandler {
         r.setMsg("parameter 누락 ");
 
         return new org.springframework.http.ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
-    }
+    }*/
 
 }
