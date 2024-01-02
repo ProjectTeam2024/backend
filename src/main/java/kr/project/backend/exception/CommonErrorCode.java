@@ -1,5 +1,6 @@
 package kr.project.backend.exception;
 
+
 public enum CommonErrorCode {
     // common
     COMMON_FAIL("A000", "실패"),
