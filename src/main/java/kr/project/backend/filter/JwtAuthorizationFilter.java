@@ -85,7 +85,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }catch (Exception e){
 
-            Map<String,String> res = new LinkedHashMap<>();
+            /*Map<String,String> res = new LinkedHashMap<>();
             ObjectMapper objectMapper = new ObjectMapper();
 
             res.put("code","9999");
@@ -94,7 +94,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().print(objectMapper.writeValueAsString(res));
             response.flushBuffer();
-            return;
+            return;*/
 
         }
 

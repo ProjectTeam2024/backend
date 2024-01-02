@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public org.springframework.http.ResponseEntity<ResponseEntity<Void>> exceptionHandler(HttpServletRequest httpServletRequest, Exception e){
 
         ResponseEntity<Void> r = new ResponseEntity<>();
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         r.setMsg("server error 발생");
 
         return new org.springframework.http.ResponseEntity<>(r, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public org.springframework.http.ResponseEntity<ResponseEntity<Void>> bindExceptionHandler(HttpServletRequest httpServletRequest, MethodArgumentNotValidException e){

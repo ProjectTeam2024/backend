@@ -117,4 +117,23 @@ public class UserService {
 
         return new UserTokenResponseDto(accessToken, refreshTokenId);
     }
+
+    @Transactional
+    public UserTokenResponseDto test() {
+
+        String accessToken = "11111";
+        String refreshTokenId = "22222";
+
+        //예측하지 못한에러 예시
+        String sizeStr = null;
+        int sizeInt = 10;
+        try {
+            int test = Integer.parseInt(sizeStr) / sizeInt;
+        }catch (Exception e){
+            log.info("에러 발생 -> httpstatus 200 but api자체는 실패");
+        }
+
+
+        return new UserTokenResponseDto(accessToken, refreshTokenId);
+    }
 }
