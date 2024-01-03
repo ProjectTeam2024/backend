@@ -65,8 +65,7 @@ public class UserService {
         //등록되어 있지 않는 유저
         if (!checkUserInfo) {
             //회원가입 1달 제한 정책 체크
-            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino())
-                    .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino()).orElse(null);
 
             if(!ObjectUtils.isEmpty(dropCheck)){
                 try {
