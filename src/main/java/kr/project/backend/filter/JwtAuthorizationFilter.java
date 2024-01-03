@@ -9,7 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.project.backend.common.Environment;
 import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.dto.common.ApiResponseMessage;
+import kr.project.backend.entity.user.User;
 import kr.project.backend.exception.CommonErrorCode;
+import kr.project.backend.exception.CommonException;
+import kr.project.backend.repository.user.UserRepository;
 import kr.project.backend.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,18 +29,22 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    private final UserRepository userRepository;
     private final String TOKEN_PREFIX = "Bearer ";
     private final String TOKEN_TYPE = "/api/" + Environment.API_VERSION;
 
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
+
+    public JwtAuthorizationFilter(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -62,6 +69,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             //jwt decode
             ServiceUser serviceUser = JwtUtil.decode(token, jwtSecretKey);
+
+            User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+            //jwt(userId, userName, userEmail만 포함) 부족한 정보 set
+            serviceUser.setUserCino(userInfo.getUserCino());
+            serviceUser.setUserBirth(userInfo.getUserBirth());
 
             //인증
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(serviceUser, null,

@@ -23,6 +23,9 @@ public class ServiceUser implements UserDetails {
     /** cino */
     private String userCino;
 
+    /** 생년월일 */
+    private String userBirth;
+
     /** token 만료시간 */
     private String exp;
 
