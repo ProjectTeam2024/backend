@@ -49,8 +49,8 @@ public class DropUser extends BaseTimeEntity implements Serializable {
     @Schema(hidden = true)
     private User user;
 
-    public DropUser(String userCino, User userInfo) {
-        this.userCino = userCino;
+    public DropUser(User userInfo) {
+        this.userCino = userInfo.getUserCino();
         this.dropDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.user = userInfo;
     }

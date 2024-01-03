@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import kr.project.backend.common.BaseTimeEntity;
+import kr.project.backend.common.Constants;
 import kr.project.backend.dto.user.UserLoginRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,13 +98,14 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userLogoutDttm = userLogoutDttm;
     }
 
-    public void updateUserDrop(UserLoginRequestDto userLoginRequestDto) {
-        this.userEmail = userLoginRequestDto.getUserEmail();
-        this.userName = userLoginRequestDto.getUserName();
-        this.userPassword = userLoginRequestDto.getUserPassword();
-        this.userPushToken = userLoginRequestDto.getUserPushToken();
-        this.userCino = userLoginRequestDto.getUserCino();
-        this.userBirth = userLoginRequestDto.getUserBirth();
-        this.userState = userLoginRequestDto.getUserState();
+    public void updateUserDrop() {
+        this.userEmail = "";
+        this.userName = "";
+        this.userPassword = "";
+        this.userPushToken = "";
+        this.userCino = "";
+        this.userBirth = "";
+        this.userState = Constants.USER_STATE.DROP_USER;
+        this.userLogoutDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

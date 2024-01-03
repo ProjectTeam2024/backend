@@ -14,6 +14,7 @@ import kr.project.backend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -46,7 +47,7 @@ public class UserController {
 
     @Operation(summary = "로그아웃",description = "로그아웃 입니다.")
     @PostMapping("/user/logout")
-    public ResponseEntity<?> logout(){
+    public ResponseEntity<?> logout(@AuthenticationPrincipal User user){
         userService.logout();
         return ObjectResult.ok();
     }

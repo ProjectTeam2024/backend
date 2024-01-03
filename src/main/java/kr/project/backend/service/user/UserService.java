@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -164,6 +165,7 @@ public class UserService {
         userRepository.save(userInfo);
     }
 
+    @Transactional
     public void dropUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
@@ -177,30 +179,16 @@ public class UserService {
             throw new CommonException(CommonErrorCode.ALREADY_DROP_USER.getCode(), CommonErrorCode.ALREADY_DROP_USER.getMessage());
         }
 
-        String userCino = userInfo.getUserCino();
-        UUID userId = userInfo.getUserId();
-
         RefreshToken refreshToken = refreshTokenRepository.findByUser(userInfo)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_TOKEN.getCode(), CommonErrorCode.NOT_FOUND_TOKEN.getMessage()));
 
-        //기본 정보 날리고 회원상태 업데이트
-        UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto();
-        userLoginRequestDto.setUserId(String.valueOf(userId));
-        userLoginRequestDto.setUserEmail("");
-        userLoginRequestDto.setUserName("");
-        userLoginRequestDto.setUserPassword("");
-        userLoginRequestDto.setUserPushToken("");
-        userLoginRequestDto.setUserCino("");
-        userLoginRequestDto.setUserBirth("");
-        userLoginRequestDto.setUserState(Constants.USER_STATE.DROP_USER);
-        userLoginRequestDto.setUserLogoutDttm(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        userInfo.updateUserDrop(userLoginRequestDto);
+        userInfo.updateUserDrop();
 
         userRepository.save(userInfo);
 
         //탈퇴 테이블 저장
-        dropUserRepository.save(new DropUser(userCino, userInfo));
+        dropUserRepository.save(new DropUser(userInfo));
 
         //리프레시 테이블 삭제
         refreshTokenRepository.delete(refreshToken);
