@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface DropUserRepository extends JpaRepository<DropUser, UUID> {
 
-    DropUser findByUserCino(String userCino);
+    Optional<DropUser> findByUserCino(String userCino);
 }

@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,9 +65,10 @@ public class UserService {
         //등록되어 있지 않는 유저
         if (!checkUserInfo) {
             //회원가입 1달 제한 정책 체크
-            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino());
+            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino())
+                    .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
-            if(dropCheck != null){
+            if(!ObjectUtils.isEmpty(dropCheck)){
                 try {
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date dropDate = transFormat.parse(dropCheck.getDropDttm());
