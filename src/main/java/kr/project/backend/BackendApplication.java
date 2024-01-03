@@ -16,7 +16,7 @@ public class BackendApplication {
         new SpringApplicationBuilder(BackendApplication.class)
                 .properties(APPLICATION_LOCATIONS)
                 .run(args);
-        //test
+
     }
 
 }
