@@ -15,10 +15,7 @@ public class BackendApplication {
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
             + "optional:classpath:application-local.yml"
             + ", optional:/app/project/config/application.yml";
-    @PostConstruct
-    public void started() {
-        // timezone UTC 셋팅
-    }
+
     public static void main(String[] args) {
         new SpringApplicationBuilder(BackendApplication.class)
                 .properties(APPLICATION_LOCATIONS)
