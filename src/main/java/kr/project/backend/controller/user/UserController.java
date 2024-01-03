@@ -3,6 +3,7 @@ package kr.project.backend.controller.user;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Environment;
 import kr.project.backend.dto.user.UserLoginRequestDto;
 import kr.project.backend.dto.user.UserRefreshTokenRequestDto;
@@ -47,15 +48,15 @@ public class UserController {
 
     @Operation(summary = "로그아웃",description = "로그아웃 입니다.")
     @PostMapping("/user/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal User user){
-        userService.logout();
+    public ResponseEntity<?> logout(@AuthenticationPrincipal ServiceUser serviceUser){
+        userService.logout(serviceUser);
         return ObjectResult.ok();
     }
 
     @Operation(summary = "회원탈퇴",description = "회원탈퇴 입니다.")
     @PostMapping("/user/drop")
-    public ResponseEntity<?> dropUser(){
-        userService.dropUser();
+    public ResponseEntity<?> dropUser(@AuthenticationPrincipal ServiceUser serviceUser){
+        userService.dropUser(serviceUser);
         return ObjectResult.ok();
     }
     

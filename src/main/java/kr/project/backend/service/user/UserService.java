@@ -22,14 +22,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -57,6 +55,7 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final DropUserRepository dropUserRepository;
 
+    @Transactional
     public UserTokenResponseDto userLogin(UserLoginRequestDto userLoginRequestDto) {
 
         //등록되어 있는 유저인지 아닌지 판단
@@ -67,7 +66,7 @@ public class UserService {
             //회원가입 1달 제한 정책 체크
             DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino()).orElse(null);
 
-            if(!ObjectUtils.isEmpty(dropCheck)){
+            if(dropCheck != null){
                 try {
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date dropDate = transFormat.parse(dropCheck.getDropDttm());
@@ -124,6 +123,7 @@ public class UserService {
         return new UserTokenResponseDto(accessToken, String.valueOf(refreshTokenInfo.getRefreshTokenId()));
     }
 
+    @Transactional
     public UserTokenResponseDto refreshAuthorize(UserRefreshTokenRequestDto userRefreshTokenRequestDto) {
 
         //리프레시토큰키값으로 리프레시 토큰 조회
@@ -152,9 +152,8 @@ public class UserService {
         return new UserTokenResponseDto(accessToken, refreshTokenId);
     }
 
-    public void logout() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
+    @Transactional
+    public void logout(ServiceUser serviceUser) {
 
         //회원정보
         User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
@@ -167,9 +166,7 @@ public class UserService {
     }
 
     @Transactional
-    public void dropUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ServiceUser serviceUser = ( ServiceUser ) auth.getPrincipal();
+    public void dropUser(ServiceUser serviceUser) {
 
         //회원정보
         User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
@@ -186,6 +183,7 @@ public class UserService {
 
         userInfo.updateUserDrop();
 
+        //회원상태 업데이트(기본 개인정보 삭제)
         userRepository.save(userInfo);
 
         //탈퇴 테이블 저장
