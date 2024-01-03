@@ -83,8 +83,6 @@ public class UserService {
             }
 
             //회원가입
-            userLoginRequestDto.setUserState(Constants.USER_STATE.ACTIVE_USER);
-            userLoginRequestDto.setUserLogoutDttm("");
             UUID userId = userRepository.save(new User(userLoginRequestDto)).getUserId();
 
             //방금 회원가입 된 유저 정보 가져오기

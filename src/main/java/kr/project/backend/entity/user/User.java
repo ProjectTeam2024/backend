@@ -90,8 +90,8 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userPushToken = userLoginRequestDto.getUserPushToken();
         this.userCino = userLoginRequestDto.getUserCino();
         this.userBirth = userLoginRequestDto.getUserBirth();
-        this.userState = userLoginRequestDto.getUserState();
-        this.userLogoutDttm = userLoginRequestDto.getUserLogoutDttm();
+        this.userState = Constants.USER_STATE.ACTIVE_USER;
+        this.userLogoutDttm = "";
     }
 
     public void updateUserLogoutDttm(String userLogoutDttm) {
@@ -108,4 +108,5 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userState = Constants.USER_STATE.DROP_USER;
         this.userLogoutDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
+
 }
