@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,16 @@ public class ApiControllerAdvice {
         apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
         apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
         apiResponseMessage.setErrorCode(ex.getCode());
+        apiResponseMessage.setErrorMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponseMessage);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponseMessage> handleParseExceptions(NullPointerException ex){
+        ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
+        apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+        apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
+        apiResponseMessage.setErrorCode(CommonErrorCode.COMMON_FAIL.getCode());
         apiResponseMessage.setErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponseMessage);
     }
