@@ -71,6 +71,6 @@ public class ApiControllerAdvice {
         apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
         apiResponseMessage.setErrorCode(CommonErrorCode.COMMON_FAIL.getCode());
         apiResponseMessage.setErrorMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponseMessage);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponseMessage);
     }
 }
