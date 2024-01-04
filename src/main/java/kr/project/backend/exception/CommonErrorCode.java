@@ -15,7 +15,9 @@ public enum CommonErrorCode {
     // user
     NOT_FOUND_USER("C000","회원을 찾을 수 없습니다."),
     ALREADY_DROP_USER("C001","이미 탈퇴된 회원입니다."),
-    JOIN_TERM_DATE("C002","탈퇴 30일후 재가입 가능합니다.");
+    JOIN_TERM_DATE("C002","탈퇴 30일후 재가입 가능합니다."),
+    // coin
+    NOT_FOUND_COIN("D000","없는 코인정보입니다.");
     ;
 
 
