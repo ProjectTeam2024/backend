@@ -19,9 +19,9 @@ public class StakingInfoDetailResponseDto implements Serializable {
     private String stakingStatus;
     @Schema(description = "보상주기",example = "매일")
     private String rewardCycle;
-    @Schema(description = "최소신청수량",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    @Schema(description = "최소신청수량",example = "1.00000000DOT")
     private String minimumOrderQuantity;
-    @Schema(description = "검증인 수수료",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    @Schema(description = "검증인 수수료",example = "보상의 10% 공제 후 분배")
     private String verificationFee;
 
     public StakingInfoDetailResponseDto(StakingInfo stakingInfo){
