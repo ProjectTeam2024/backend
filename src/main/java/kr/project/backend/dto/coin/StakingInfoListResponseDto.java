@@ -18,13 +18,10 @@ public class StakingInfoListResponseDto implements Serializable {
     private String coinName;
     @Schema(description = "연 추정 보상률",example = "5.3%")
     private String annualRewardRate;
-    @Schema(description = "거래소",example = "업비트")
-    private CoinMarketType coinMarketType;
 
     public StakingInfoListResponseDto(StakingInfo stakingInfo){
         this.stakingId = stakingInfo.getStakingId();
         this.coinName = stakingInfo.getCoinName();
         this.annualRewardRate = stakingInfo.getAnnualRewardRate();
-        this.coinMarketType = stakingInfo.getCoinMarketType();
     }
 }
