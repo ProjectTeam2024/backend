@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 
@@ -34,10 +35,11 @@ public class SwaggerConfig {
                 .info(new io.swagger.v3.oas.models.info.Info().title("TEST API")
                         .description("TEST API 명세서입니다.")
                         .version("v0.0.1"))
+                .addSecurityItem(new SecurityRequirement().addList("jwtAuth"))
                 .components(
                         new Components().addSecuritySchemes(
-                                "Authorization",
-                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT").name("Authorization")
+                                "jwtAuth",
+                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT").name("jwtAuth")
                         ));
     }
 }

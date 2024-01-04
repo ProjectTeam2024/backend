@@ -24,13 +24,13 @@ public class StakingInfoController {
 
     private final StakingInfoService stakingInfoService;
 
-    @Operation(summary = "코인 스테이킹 목록 조회", description = "코인 스테이킹 목록 조회를 합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "코인 스테이킹 목록 조회", description = "코인 스테이킹 목록 조회를 합니다.")
     @GetMapping("/infos")
     public ResponseEntity<?> stakingInfos() {
         return ListResult.build(stakingInfoService.getStakingInfos());
     }
 
-    @Operation(summary = "코인 스테이킹 상세 조회", description = "코인 스테이킹 상세 조회를 합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "코인 스테이킹 상세 조회", description = "코인 스테이킹 상세 조회를 합니다.")
     @GetMapping("/info/{stakingId}")
     public ResponseEntity<?> stakingInfo(@PathVariable(value = "stakingId") UUID stakingId) {
         return ObjectResult.build(stakingInfoService.getStakingInfo(stakingId));
