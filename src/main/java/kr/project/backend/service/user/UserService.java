@@ -3,9 +3,10 @@ package kr.project.backend.service.user;
 import io.jsonwebtoken.ExpiredJwtException;
 import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Constants;
-import kr.project.backend.dto.user.UserLoginRequestDto;
-import kr.project.backend.dto.user.UserRefreshTokenRequestDto;
-import kr.project.backend.dto.user.UserTokenResponseDto;
+import kr.project.backend.dto.user.request.UserLoginRequestDto;
+import kr.project.backend.dto.user.request.UserRefreshTokenRequestDto;
+import kr.project.backend.dto.user.response.UserCheckStateResponse;
+import kr.project.backend.dto.user.response.UserTokenResponseDto;
 import kr.project.backend.entity.common.CommonCode;
 import kr.project.backend.entity.user.DropUser;
 import kr.project.backend.entity.user.RefreshToken;
@@ -190,6 +191,17 @@ public class UserService {
 
         //리프레시 테이블 삭제
         refreshTokenRepository.delete(refreshToken);
+    }
+
+    public UserCheckStateResponse userStateCheck(ServiceUser serviceUser){
+
+        //회원정보
+        User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+        CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_STATE.CODE,userInfo.getUserState()).orElse(null);
+
+        return new UserCheckStateResponse(userInfo.getUserState(),commonCode.getCommonCodeName());
     }
     
 }

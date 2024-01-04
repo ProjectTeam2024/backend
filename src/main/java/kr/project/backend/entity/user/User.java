@@ -2,10 +2,9 @@ package kr.project.backend.entity.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import kr.project.backend.common.BaseTimeEntity;
 import kr.project.backend.common.Constants;
-import kr.project.backend.dto.user.UserLoginRequestDto;
+import kr.project.backend.dto.user.request.UserLoginRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

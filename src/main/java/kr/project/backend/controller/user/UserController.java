@@ -5,11 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Environment;
-import kr.project.backend.dto.user.UserLoginRequestDto;
-import kr.project.backend.dto.user.UserRefreshTokenRequestDto;
-import kr.project.backend.dto.user.UserTokenResponseDto;
-import kr.project.backend.entity.user.RefreshToken;
-import kr.project.backend.entity.user.User;
+import kr.project.backend.dto.user.request.UserLoginRequestDto;
+import kr.project.backend.dto.user.request.UserRefreshTokenRequestDto;
 import kr.project.backend.results.ObjectResult;
 import kr.project.backend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +55,12 @@ public class UserController {
     public ResponseEntity<?> dropUser(@AuthenticationPrincipal ServiceUser serviceUser){
         userService.dropUser(serviceUser);
         return ObjectResult.ok();
+    }
+
+    @Operation(summary = "회원상태 체크",description = "회원상태 체크 입니다.")
+    @GetMapping("/user/state/check")
+    public ResponseEntity<?> userStateCheck(@AuthenticationPrincipal ServiceUser serviceUser){
+        return ObjectResult.build(userService.userStateCheck(serviceUser));
     }
     
 }
