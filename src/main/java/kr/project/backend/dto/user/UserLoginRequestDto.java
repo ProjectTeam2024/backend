@@ -33,9 +33,7 @@ public class UserLoginRequestDto {
     @Schema(description = "생일일자", example = "19900315")
     private String userBirth;
 
-    @Schema(description = "회원상태", example = "01")
-    private String userState;
-
-    @Schema(description = "로그아웃 일시", example = "2024-01-02 20:00:11", hidden = true)
-    private String userLogoutDttm;
+    @NotBlank(message = "회원가입 구분을 넣어주세요.")
+    @Schema(description = "회원가입 구분", example = "01")
+    private String userJoinKind;
 }

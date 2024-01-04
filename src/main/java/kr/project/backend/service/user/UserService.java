@@ -6,11 +6,13 @@ import kr.project.backend.common.Constants;
 import kr.project.backend.dto.user.UserLoginRequestDto;
 import kr.project.backend.dto.user.UserRefreshTokenRequestDto;
 import kr.project.backend.dto.user.UserTokenResponseDto;
+import kr.project.backend.entity.common.CommonCode;
 import kr.project.backend.entity.user.DropUser;
 import kr.project.backend.entity.user.RefreshToken;
 import kr.project.backend.entity.user.User;
 import kr.project.backend.exception.CommonErrorCode;
 import kr.project.backend.exception.CommonException;
+import kr.project.backend.repository.common.CommonCodeRepository;
 import kr.project.backend.repository.user.DropUserRepository;
 import kr.project.backend.repository.user.UserRepository;
 import kr.project.backend.repository.user.RefreshTokenRepository;
@@ -18,8 +20,6 @@ import kr.project.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +30,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * 회원가입, 로그인 API seriveImpl
- *
- * @author kh
- * @version v1.0
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -54,6 +48,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final DropUserRepository dropUserRepository;
+    private final CommonCodeRepository commonCodeRepository;
 
     @Transactional
     public UserTokenResponseDto userLogin(UserLoginRequestDto userLoginRequestDto) {
@@ -106,6 +101,12 @@ public class UserService {
         //정보 조회
         User userInfo = userRepository.findByUserCino(userLoginRequestDto.getUserCino())
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+        //중복 회원가입 체크
+        if(!userInfo.getUserJoinKind().equals(userLoginRequestDto.getUserJoinKind())){
+            CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_JOIN_KIND.CODE,userInfo.getUserJoinKind()).orElse(null);
+            throw new CommonException(CommonErrorCode.ALREADY_JOIN_USER.getCode(), CommonErrorCode.ALREADY_JOIN_USER.getMessage()+"("+commonCode.getCommonCodeName()+")");
+        }
 
         String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
         String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);

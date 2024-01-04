@@ -37,12 +37,10 @@ public class User extends BaseTimeEntity implements Serializable {
     private UUID userId;
 
     /** eamil */
-    @NotNull
     @Schema(description = "eamil",example = "test_adress@email.com")
     private String userEmail;
 
     /** 이름 */
-    @NotNull
     @Schema(description = "이름",example = "아무개")
     private String userName;
 
@@ -51,29 +49,28 @@ public class User extends BaseTimeEntity implements Serializable {
     private String userPassword;
 
     /** push token */
-    @NotNull
     @Schema(description = "push token",example = "pomOIN123/sdfLAKsdf2/knsadfnaQWEBB")
     private String userPushToken;
 
     /** cino */
-    @NotNull
     @Schema(description = "cino",example = "asdklfn123LKNKasdfoiilnQWEB9124usdfksliWETSDFmlknoiple==")
     private String userCino;
 
     /** 생년월일 */
-    @NotNull
     @Schema(description = "생년월일" , example = "19940810")
     private String userBirth;
 
     /** 회원상태 */
-    @NotNull
     @Schema(description = "회원상태" , example = "01")
     private String userState;
 
     /** 로그아웃 일시 */
-    @NotNull
     @Schema(description = "로그아웃 일시" , example = "2024-01-02 20:00:11")
     private String userLogoutDttm;
+
+    /** 회원가입 구분 */
+    @Schema(description = "회원가입 구분" , example = "01")
+    private String userJoinKind;
 
     @OneToOne(mappedBy = "user")
     @Schema(hidden = true)
@@ -90,6 +87,7 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userPushToken = userLoginRequestDto.getUserPushToken();
         this.userCino = userLoginRequestDto.getUserCino();
         this.userBirth = userLoginRequestDto.getUserBirth();
+        this.userJoinKind = userLoginRequestDto.getUserJoinKind();
         this.userState = Constants.USER_STATE.ACTIVE_USER;
         this.userLogoutDttm = "";
     }
