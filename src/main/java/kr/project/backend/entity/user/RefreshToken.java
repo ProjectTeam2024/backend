@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
@@ -28,18 +29,14 @@ public class RefreshToken extends BaseTimeEntity implements Serializable {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     @NotNull
-    @Schema(description = "리프레시토큰 키값", example = "3fdec9bc-1592-4e53-97e6-3454869f5f95")
+    @Comment(value = "리프레시토큰 키값")
     private UUID refreshTokenId;
 
-    /**
-     * 리프레시 토큰
-     */
-    @Schema(description = "리프레시토큰", example = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJhZGI1Y2M5Yy01NDVmLTRlMGItOGRjYy1iMzhkNTdlZTZkYjkiLCJtbWJyTm0iOiLquYDtmY3roYAiLCJ1c2VyRW1haWwiOiJ0ZXN0MjJAbWFpbC5jb20iLCJpYXQiOjE3MDQxMzA0MDAsImV4cCI6MTcwNDEzMDcwMH0.3zL8l4pmqg4sttKgTUGDVl1EpwCtvnIiaAon2VdvUMI")
+    @Comment(value = "리프레시토큰값")
     private String refreshToken;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @Schema(hidden = true)
     private User user;
 
     public RefreshToken(String refreshToken, User userInfo) {

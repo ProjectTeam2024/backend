@@ -6,6 +6,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Getter;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,10 +21,12 @@ public class BaseTimeEntity {
 
     @CreatedDate
     @Schema(hidden = true)
+    @Comment(value = "생성 일자")
     private String createdDate;
 
     @LastModifiedDate
     @Schema(hidden = true)
+    @Comment(value = "수정 일자")
     private String modifiedDate;
 
     @PrePersist

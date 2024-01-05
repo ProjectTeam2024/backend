@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
@@ -29,24 +30,16 @@ public class DropUser extends BaseTimeEntity implements Serializable {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     @NotNull
-    @Schema(description = "탈퇴키값", example = "3fdec9bc-1592-4e53-97e6-3454869f5f95")
+    @Comment(value = "탈퇴유저 키값")
     private UUID dropId;
-
-    /**
-     * cino
-     */
-    @Schema(description = "cino", example = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJhZGI1Y2M5Yy01NDVmLTR==")
+    @Comment(value = "탈퇴유저 cino")
     private String userCino;
 
-    /**
-     * 탈퇴일자
-     */
-    @Schema(description = "탈퇴일시", example = "2023-01-01 02:12:00")
+    @Comment(value = "탈퇴일시")
     private String dropDttm;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Schema(hidden = true)
     private User user;
 
     public DropUser(User userInfo) {

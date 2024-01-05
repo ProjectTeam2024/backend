@@ -194,6 +194,7 @@ public class UserService {
         refreshTokenRepository.delete(refreshToken);
     }
 
+    @Transactional(readOnly = true)
     public UserCheckStateResponse userStateCheck(ServiceUser serviceUser){
 
         //회원정보

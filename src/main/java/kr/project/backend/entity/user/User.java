@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -32,51 +33,39 @@ public class User extends BaseTimeEntity implements Serializable {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    @Schema(description = "회원관리번호",example = "1ac83a62-578a-4421-b464-5511e9cfd89e")
+    @Comment(value = "유저 키값")
     private UUID userId;
 
-    /** eamil */
-    @Schema(description = "eamil",example = "test_adress@email.com")
+    @Comment(value = "유저 이메일")
     private String userEmail;
 
-    /** 이름 */
-    @Schema(description = "이름",example = "아무개")
+    @Comment(value = "유저 이름")
     private String userName;
 
-    /** 패스워드 */
-    @Schema(description = "패스워드",example = "qwe123aa")
+    @Comment(value = "유저 패스워드")
     private String userPassword;
-
-    /** push token */
-    @Schema(description = "push token",example = "pomOIN123/sdfLAKsdf2/knsadfnaQWEBB")
+    @Comment(value = "유저 푸시토큰")
     private String userPushToken;
 
-    /** cino */
-    @Schema(description = "cino",example = "asdklfn123LKNKasdfoiilnQWEB9124usdfksliWETSDFmlknoiple==")
+    @Comment(value = "유저 cino")
     private String userCino;
 
-    /** 생년월일 */
-    @Schema(description = "생년월일" , example = "19940810")
+    @Comment(value = "유저 생년월일")
     private String userBirth;
 
-    /** 회원상태 */
-    @Schema(description = "회원상태" , example = "01")
+    @Comment(value = "회원 상태")
     private String userState;
 
-    /** 로그아웃 일시 */
-    @Schema(description = "로그아웃 일시" , example = "2024-01-02 20:00:11")
+    @Comment(value = "로그아웃 일시")
     private String userLogoutDttm;
 
-    /** 회원가입 구분 */
-    @Schema(description = "회원가입 구분" , example = "01")
+    @Comment(value = "회원가입 구분")
     private String userJoinKind;
 
     @OneToOne(mappedBy = "user")
-    @Schema(hidden = true)
     private RefreshToken refreshToken;
 
     @OneToMany(mappedBy = "user")
-    @Schema(hidden = true)
     private List<DropUser> dropUser;
 
     public User(UserLoginRequestDto userLoginRequestDto){

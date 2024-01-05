@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 import java.io.Serializable;
 
@@ -16,24 +17,18 @@ import java.io.Serializable;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommonCode extends BaseTimeEntity implements Serializable {
 
-    /**
-     * 그룹 공통코드
-     */
     @Id
-    @Schema(description = "그룹 공통코드", example = "USER_STATE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Comment(value = "공통코드키값")
+    private Long commonCodeId;
+
+    @Comment(value = "그룹 공통코드")
     private String grpCommonCode;
 
-    /**
-     * 공통코드
-     */
-    //@Id
-    @Schema(description = "공통코드", example = "01")
+    @Comment(value = "공통코드")
     private String commonCode;
 
-    /**
-     * 공통코드
-     */
-    @Schema(description = "공통코드명", example = "정상")
+    @Comment(value = "공통코드명")
     private String commonCodeName;
 
 }
