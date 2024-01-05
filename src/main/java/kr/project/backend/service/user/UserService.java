@@ -105,7 +105,8 @@ public class UserService {
 
         //중복 회원가입 체크
         if(!userInfo.getUserJoinKind().equals(userLoginRequestDto.getUserJoinKind())){
-            CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_JOIN_KIND.CODE,userInfo.getUserJoinKind()).orElse(null);
+            CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_JOIN_KIND.CODE,userInfo.getUserJoinKind())
+                    .orElseThrow(() -> new CommonException(CommonErrorCode.NULL_DATA.getCode(), CommonErrorCode.NULL_DATA.getMessage()));;
             throw new CommonException(CommonErrorCode.ALREADY_JOIN_USER.getCode(), CommonErrorCode.ALREADY_JOIN_USER.getMessage()+"("+commonCode.getCommonCodeName()+")");
         }
 
@@ -199,7 +200,8 @@ public class UserService {
         User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
-        CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_STATE.CODE,userInfo.getUserState()).orElse(null);
+        CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_STATE.CODE,userInfo.getUserState())
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NULL_DATA.getCode(), CommonErrorCode.NULL_DATA.getMessage()));;
 
         return new UserCheckStateResponse(userInfo.getUserState(),commonCode.getCommonCodeName());
     }

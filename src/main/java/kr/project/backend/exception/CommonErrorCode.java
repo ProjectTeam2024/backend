@@ -6,6 +6,7 @@ public enum CommonErrorCode {
     SUCCESS("SUCCESS", "정상처리"),
     FAIL("FAIL", "실패"),
     COMMON_FAIL("A000", "실패"),
+    NULL_DATA("A001","데이터가 없습니다."),
 
     // token
     EXPIRED_TOKEN("BOOO","만료된 토큰입니다."),
