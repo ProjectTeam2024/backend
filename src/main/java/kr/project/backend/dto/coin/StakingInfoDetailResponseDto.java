@@ -6,6 +6,8 @@ import kr.project.backend.entity.coin.enumType.CoinMarketType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class StakingInfoDetailResponseDto implements Serializable {
@@ -24,7 +26,10 @@ public class StakingInfoDetailResponseDto implements Serializable {
     @Schema(description = "검증인 수수료",example = "보상의 10% 공제 후 분배")
     private String verificationFee;
 
-    public StakingInfoDetailResponseDto(StakingInfo stakingInfo){
+    @Schema(description = "관련 거래소 리스트",example = "업비트,코인원, etc...")
+    private List<AboutCoinMarketDto> coinMarketTypes;
+
+    public StakingInfoDetailResponseDto(StakingInfo stakingInfo, List<AboutCoinMarketDto> aboutCoinMarketDtos){
         this.coinName = stakingInfo.getCoinName();
         this.annualRewardRate = stakingInfo.getAnnualRewardRate();
         this.coinMarketType = stakingInfo.getCoinMarketType();
@@ -32,5 +37,6 @@ public class StakingInfoDetailResponseDto implements Serializable {
         this.rewardCycle = stakingInfo.getRewardCycle();
         this.minimumOrderQuantity = stakingInfo.getMinimumOrderQuantity();
         this.verificationFee = stakingInfo.getVerificationFee();
+        this.coinMarketTypes = aboutCoinMarketDtos;
     }
 }

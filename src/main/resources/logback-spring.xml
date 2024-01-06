@@ -5,6 +5,7 @@
     <!--<property name="LOG_PATH" value="/Users//Desktop/javaPjt"/>-->
     <property name="LOG_PATH" value="/app/project/logs"/>
     <!--<property name="LOG_PATH" value="/Users/yjkim-mtn/desktop"/>-->
+    <!--<property name="LOG_PATH" value="/Users/kimyoungjae/desktop"/>-->
 
 
     <!-- 로그 파일 이름 -->
