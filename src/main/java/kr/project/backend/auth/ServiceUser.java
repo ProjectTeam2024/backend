@@ -6,11 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-/**
- * security userDetails custom
- * @author kh
- * @version v1.0
- */
+
 @Data
 public class ServiceUser implements UserDetails {
 
@@ -19,12 +15,6 @@ public class ServiceUser implements UserDetails {
 
     /** eamil */
     private String userEmail;
-
-    /** cino */
-    private String userCino;
-
-    /** 생년월일 */
-    private String userBirth;
 
     /** token 만료시간 */
     private String exp;

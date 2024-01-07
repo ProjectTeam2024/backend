@@ -109,15 +109,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     chain.doFilter(request, response);
                     return;
                 }
+
                 //jwt decode
                 serviceUser = JwtUtil.decode(token, jwtSecretKey);
 
                 User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
                         .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
-
-                //jwt(userId, userName, userEmail만 포함) 부족한 정보 set
-                serviceUser.setUserCino(userInfo.getUserCino());
-                serviceUser.setUserBirth(userInfo.getUserBirth());
 
                 simpleGrantedAuthority = USER;
             }

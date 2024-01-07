@@ -55,12 +55,12 @@ public class UserService {
     public UserTokenResponseDto userLogin(UserLoginRequestDto userLoginRequestDto) {
 
         //등록되어 있는 유저인지 아닌지 판단
-        boolean checkUserInfo = userRepository.existsByUserCino(userLoginRequestDto.getUserCino());
+        boolean checkUserInfo = userRepository.existsByUserEmail(userLoginRequestDto.getUserEmail());
 
         //등록되어 있지 않는 유저
         if (!checkUserInfo) {
             //회원가입 1달 제한 정책 체크
-            DropUser dropCheck = dropUserRepository.findByUserCino(userLoginRequestDto.getUserCino()).orElse(null);
+            DropUser dropCheck = dropUserRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElse(null);
 
             if(dropCheck != null){
                 try {
@@ -86,8 +86,8 @@ public class UserService {
                     .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
-            String accessToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
-            String refreshToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
+            String accessToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
+            String refreshToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
 
             //리프레시 토큰 저장
             refreshTokenRepository.save(new RefreshToken(refreshToken, userInfo));
@@ -100,7 +100,7 @@ public class UserService {
         //등록되어 있는 유저
 
         //정보 조회
-        User userInfo = userRepository.findByUserCino(userLoginRequestDto.getUserCino())
+        User userInfo = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail())
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
         //중복 회원가입 체크
@@ -110,8 +110,8 @@ public class UserService {
             throw new CommonException(CommonErrorCode.ALREADY_JOIN_USER.getCode(), CommonErrorCode.ALREADY_JOIN_USER.getMessage()+"("+commonCode.getCommonCodeName()+")");
         }
 
-        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
-        String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
+        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
+        String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
 
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_EXIST_TOKEN.getCode(), CommonErrorCode.NOT_EXIST_TOKEN.getMessage()));
@@ -140,14 +140,14 @@ public class UserService {
             JwtUtil.isExpired(refreshToken.getRefreshToken(), jwtSecretKey);
         } catch (ExpiredJwtException e) {
             //만료시 refreshToken 재발급(db 업데이트)
-            String newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * refreshTokenTime);
+            String newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
 
             //리프레시 토큰 저장
             refreshToken.updateRefreshToken(newRefreshToken);
         }
 
         //토큰 재발급
-        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), userInfo.getUserName(), jwtSecretKey, expiredMs * accesTokenTime);
+        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
         String refreshTokenId = String.valueOf(refreshToken.getRefreshTokenId());
 
         return new UserTokenResponseDto(accessToken, refreshTokenId);
@@ -182,13 +182,12 @@ public class UserService {
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_TOKEN.getCode(), CommonErrorCode.NOT_FOUND_TOKEN.getMessage()));
 
 
-        userInfo.updateUserDrop();
-
-        //회원상태 업데이트(기본 개인정보 삭제)
-        userRepository.save(userInfo);
-
         //탈퇴 테이블 저장
         dropUserRepository.save(new DropUser(userInfo));
+
+        //회원상태 업데이트(기본 개인정보 삭제)
+        userInfo.updateUserDrop();
+        userRepository.save(userInfo);
 
         //리프레시 테이블 삭제
         refreshTokenRepository.delete(refreshToken);

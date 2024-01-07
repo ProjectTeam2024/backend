@@ -32,8 +32,9 @@ public class DropUser extends BaseTimeEntity implements Serializable {
     @NotNull
     @Comment(value = "탈퇴유저 키값")
     private UUID dropId;
-    @Comment(value = "탈퇴유저 cino")
-    private String userCino;
+
+    @Comment(value = "유저 이메일")
+    private String userEmail;
 
     @Comment(value = "탈퇴일시")
     private String dropDttm;
@@ -43,7 +44,7 @@ public class DropUser extends BaseTimeEntity implements Serializable {
     private User user;
 
     public DropUser(User userInfo) {
-        this.userCino = userInfo.getUserCino();
+        this.userEmail = userInfo.getUserEmail();
         this.dropDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.user = userInfo;
     }

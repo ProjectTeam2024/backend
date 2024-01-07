@@ -1,6 +1,5 @@
 package kr.project.backend.entity.user;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import kr.project.backend.common.BaseTimeEntity;
 import kr.project.backend.common.Constants;
@@ -17,11 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 회원정보
- * @author kh
- * @version v1.0
- */
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,19 +34,8 @@ public class User extends BaseTimeEntity implements Serializable {
     @Comment(value = "유저 이메일")
     private String userEmail;
 
-    @Comment(value = "유저 이름")
-    private String userName;
-
-    @Comment(value = "유저 패스워드")
-    private String userPassword;
     @Comment(value = "유저 푸시토큰")
     private String userPushToken;
-
-    @Comment(value = "유저 cino")
-    private String userCino;
-
-    @Comment(value = "유저 생년월일")
-    private String userBirth;
 
     @Comment(value = "회원 상태")
     private String userState;
@@ -70,11 +54,7 @@ public class User extends BaseTimeEntity implements Serializable {
 
     public User(UserLoginRequestDto userLoginRequestDto){
         this.userEmail = userLoginRequestDto.getUserEmail();
-        this.userName = userLoginRequestDto.getUserName();
-        this.userPassword = userLoginRequestDto.getUserPassword();
         this.userPushToken = userLoginRequestDto.getUserPushToken();
-        this.userCino = userLoginRequestDto.getUserCino();
-        this.userBirth = userLoginRequestDto.getUserBirth();
         this.userJoinKind = userLoginRequestDto.getUserJoinKind();
         this.userState = Constants.USER_STATE.ACTIVE_USER;
         this.userLogoutDttm = "";
@@ -86,11 +66,8 @@ public class User extends BaseTimeEntity implements Serializable {
 
     public void updateUserDrop() {
         this.userEmail = "";
-        this.userName = "";
-        this.userPassword = "";
         this.userPushToken = "";
-        this.userCino = "";
-        this.userBirth = "";
+        this.userJoinKind = "";
         this.userState = Constants.USER_STATE.DROP_USER;
         this.userLogoutDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
