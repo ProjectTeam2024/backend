@@ -19,3 +19,8 @@ spring:
       password: <password>
 jwt:
   secretKey: <secretKey>
+
+admin:
+  apiKeyName: <apiKeyName>
+  aesKey: <aesKey>
+  aesIv: <aesIv>
