@@ -20,12 +20,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public GroupedOpenApi chatOpenApi() {
-        String[] paths = {"/api/v1/**"};
-
+    public GroupedOpenApi userGroupApi() {
         return GroupedOpenApi.builder()
-                .group("STAKING API v1")
-                .pathsToMatch(paths)
+                .group("1")
+                .displayName("사용자")
+                .pathsToMatch("/api/v1/user/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi adminGroupApi() {
+        return GroupedOpenApi.builder()
+                .group("2")
+                .displayName("관리자")
+                .pathsToMatch("/api/v1/admin/**")
                 .build();
     }
 

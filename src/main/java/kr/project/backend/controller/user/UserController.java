@@ -15,16 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * 로그인, 회원가입 API
- * @author kh
- * @version v1.0
- */
 
 @Tag(name = "account", description = "로그인 / 회원가입")
 @Slf4j
 @RestController
-@RequestMapping("/api/" + Environment.API_VERSION + "/account")
+@RequestMapping("/api/" + Environment.API_VERSION + "/" + Environment.API_USER + "/account")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -44,21 +39,21 @@ public class UserController {
     }
 
     @Operation(summary = "로그아웃",description = "로그아웃 입니다.")
-    @PostMapping("/user/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@AuthenticationPrincipal ServiceUser serviceUser){
         userService.logout(serviceUser);
         return ObjectResult.ok();
     }
 
     @Operation(summary = "회원탈퇴",description = "회원탈퇴 입니다.")
-    @PostMapping("/user/drop")
+    @PostMapping("/drop")
     public ResponseEntity<?> dropUser(@AuthenticationPrincipal ServiceUser serviceUser){
         userService.dropUser(serviceUser);
         return ObjectResult.ok();
     }
 
     @Operation(summary = "회원상태 체크",description = "회원상태 체크 입니다.")
-    @GetMapping("/user/state/check")
+    @GetMapping("/state/check")
     public ResponseEntity<?> userStateCheck(@AuthenticationPrincipal ServiceUser serviceUser){
         return ObjectResult.build(userService.userStateCheck(serviceUser));
     }
