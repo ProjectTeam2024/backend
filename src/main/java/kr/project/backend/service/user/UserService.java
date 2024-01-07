@@ -104,8 +104,8 @@ public class UserService {
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
         //중복 회원가입 체크
-        if(!userInfo.getUserJoinKind().equals(userLoginRequestDto.getUserJoinKind())){
-            CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_JOIN_KIND.CODE,userInfo.getUserJoinKind())
+        if(!userInfo.getUserJoinSnsKind().equals(userLoginRequestDto.getUserJoinSnsKind())){
+            CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_JOIN_SNS_KIND.CODE,userInfo.getUserJoinSnsKind())
                     .orElseThrow(() -> new CommonException(CommonErrorCode.NULL_DATA.getCode(), CommonErrorCode.NULL_DATA.getMessage()));;
             throw new CommonException(CommonErrorCode.ALREADY_JOIN_USER.getCode(), CommonErrorCode.ALREADY_JOIN_USER.getMessage()+"("+commonCode.getCommonCodeName()+")");
         }

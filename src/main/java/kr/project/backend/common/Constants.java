@@ -17,9 +17,9 @@ public class Constants {
     }
 
     /** 회원가입 구분 코드 */
-    public static final class USER_JOIN_KIND {
+    public static final class USER_JOIN_SNS_KIND {
 
-        public static final String CODE = "USER_JOIN_KIND";
+        public static final String CODE = "USER_JOIN_SNS_KIND";
 
         public static final String KAKAO = "01";
 
@@ -28,6 +28,20 @@ public class Constants {
         public static final String GOOGLE = "03";
 
         public static final String APPLE = "04";
+    }
+
+    /** 회원가입 os 구분 코드 */
+    public static final class USER_JOIN_OS_KIND {
+
+        public static final String CODE = "USER_JOIN_OS_KIND";
+
+        public static final String AOS = "01";
+
+        public static final String IOS = "02";
+
+        public static final String WINDOW = "03";
+
+        public static final String MAC = "04";
     }
 
 

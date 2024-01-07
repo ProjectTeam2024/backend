@@ -16,7 +16,11 @@ public class UserLoginRequestDto {;
     @Schema(description = "푸쉬 토큰", example = "asWERds123/sdkmmal2WED/sdmpPalm")
     private String userPushToken;
 
-    @NotBlank(message = "회원가입 구분을 넣어주세요.")
-    @Schema(description = "회원가입 구분", example = "01")
-    private String userJoinKind;
+    @NotBlank(message = "회원가입 sns 구분을 넣어주세요.")
+    @Schema(description = "회원가입 sns 구분", example = "01")
+    private String userJoinSnsKind;
+
+    @NotBlank(message = "회원가입 os 구분을 넣어주세요.")
+    @Schema(description = "회원가입 os 구분", example = "01")
+    private String userJoinOsKind;
 }

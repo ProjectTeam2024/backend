@@ -43,8 +43,11 @@ public class User extends BaseTimeEntity implements Serializable {
     @Comment(value = "로그아웃 일시")
     private String userLogoutDttm;
 
-    @Comment(value = "회원가입 구분")
-    private String userJoinKind;
+    @Comment(value = "회원가입 sns 구분")
+    private String userJoinSnsKind;
+
+    @Comment(value = "회원가입 os 구분")
+    private String userJoinOsKind;
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
@@ -55,7 +58,8 @@ public class User extends BaseTimeEntity implements Serializable {
     public User(UserLoginRequestDto userLoginRequestDto){
         this.userEmail = userLoginRequestDto.getUserEmail();
         this.userPushToken = userLoginRequestDto.getUserPushToken();
-        this.userJoinKind = userLoginRequestDto.getUserJoinKind();
+        this.userJoinSnsKind = userLoginRequestDto.getUserJoinSnsKind();
+        this.userJoinOsKind = userLoginRequestDto.getUserJoinOsKind();
         this.userState = Constants.USER_STATE.ACTIVE_USER;
         this.userLogoutDttm = "";
     }
@@ -67,7 +71,8 @@ public class User extends BaseTimeEntity implements Serializable {
     public void updateUserDrop() {
         this.userEmail = "";
         this.userPushToken = "";
-        this.userJoinKind = "";
+        this.userJoinSnsKind = "";
+        this.userJoinOsKind = "";
         this.userState = Constants.USER_STATE.DROP_USER;
         this.userLogoutDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
