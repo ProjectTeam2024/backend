@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UserCheckStateResponse {
+public class UserCheckStateResponseDto {
 
     /** 유저상태 */
     private String userState;

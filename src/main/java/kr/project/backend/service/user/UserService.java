@@ -5,7 +5,7 @@ import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Constants;
 import kr.project.backend.dto.user.request.UserLoginRequestDto;
 import kr.project.backend.dto.user.request.UserRefreshTokenRequestDto;
-import kr.project.backend.dto.user.response.UserCheckStateResponse;
+import kr.project.backend.dto.user.response.UserCheckStateResponseDto;
 import kr.project.backend.dto.user.response.UserTokenResponseDto;
 import kr.project.backend.entity.common.CommonCode;
 import kr.project.backend.entity.user.DropUser;
@@ -195,7 +195,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserCheckStateResponse userStateCheck(ServiceUser serviceUser){
+    public UserCheckStateResponseDto userStateCheck(ServiceUser serviceUser){
 
         //회원정보
         User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
@@ -204,7 +204,7 @@ public class UserService {
         CommonCode commonCode = commonCodeRepository.findByGrpCommonCodeAndCommonCode(Constants.USER_STATE.CODE,userInfo.getUserState())
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NULL_DATA.getCode(), CommonErrorCode.NULL_DATA.getMessage()));;
 
-        return new UserCheckStateResponse(userInfo.getUserState(),commonCode.getCommonCodeName());
+        return new UserCheckStateResponseDto(userInfo.getUserState(),commonCode.getCommonCodeName());
     }
     
 }

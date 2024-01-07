@@ -45,6 +45,7 @@ public class SecurityConfig {
                                          "/v3/api-docs/**",
                                          "/api/v1/user/account/login",
                                          "/api/v1/user/account/refresh/authorize",
+                                         "/api/v1/admin/account/accessKey/**",
                                          "/error",
                                          "/")
                                         .permitAll()

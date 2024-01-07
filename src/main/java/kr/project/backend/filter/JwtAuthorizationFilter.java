@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.UUID;
@@ -164,12 +165,29 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             return;
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
             ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
             apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
             apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
-            apiResponseMessage.setErrorCode(CommonErrorCode.COMMON_FAIL.getCode());
+            apiResponseMessage.setErrorCode(CommonErrorCode.WRONG_TOKEN.getCode());
+            apiResponseMessage.setErrorMessage(e.getMessage());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(objectMapper.writeValueAsString(apiResponseMessage));
+            response.flushBuffer();
+
+            return;
+
+        }catch (IllegalBlockSizeException e){
+
+            ApiResponseMessage apiResponseMessage = new ApiResponseMessage();
+            apiResponseMessage.setStatus(CommonErrorCode.FAIL.getCode());
+            apiResponseMessage.setMessage(CommonErrorCode.FAIL.getMessage());
+            apiResponseMessage.setErrorCode(CommonErrorCode.WRONG_TOKEN.getCode());
             apiResponseMessage.setErrorMessage(e.getMessage());
 
             ObjectMapper objectMapper = new ObjectMapper();
