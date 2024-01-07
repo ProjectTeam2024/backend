@@ -31,7 +31,7 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token)
                     .getBody().getExpiration().before(new Date());
     }
-    public static String createJwt(UUID userId, String userEmail, String secretKey, Long expiredMs){
+    public static String createJwt(UUID userId, String userEmail, String secretKey, Long expiredHs){
         Claims claIms = Jwts.claims();
         claIms.put("userId",userId);
         claIms.put("userEmail",userEmail);
@@ -39,7 +39,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claIms)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+                .setExpiration(new Date(System.currentTimeMillis() + expiredHs))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

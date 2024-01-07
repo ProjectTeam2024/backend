@@ -38,11 +38,11 @@ public class UserService {
 
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
-    private final long expiredMs = 1000 * 60;
+    private final long expiredHs = 3600000; //1hr
 
-    private final long accesTokenTime = 5L;
+    private final long accesTokenTime = 24L; //1day (1hr * 24)
 
-    private final long refreshTokenTime = 600L;
+    private final long refreshTokenTime = 168L; //7day (1hr * 168)
 
     private final Integer reJoinTermDate = 30;
 
@@ -86,8 +86,8 @@ public class UserService {
                     .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
 
             //응답 토큰 세팅(리스레시 토큰은 키값으로 응답)
-            String accessToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
-            String refreshToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
+            String accessToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredHs * accesTokenTime);
+            String refreshToken = JwtUtil.createJwt(userId, userInfo.getUserEmail(), jwtSecretKey, expiredHs * refreshTokenTime);
 
             //리프레시 토큰 저장
             refreshTokenRepository.save(new RefreshToken(refreshToken, userInfo));
@@ -110,8 +110,8 @@ public class UserService {
             throw new CommonException(CommonErrorCode.ALREADY_JOIN_USER.getCode(), CommonErrorCode.ALREADY_JOIN_USER.getMessage()+"("+commonCode.getCommonCodeName()+")");
         }
 
-        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
-        String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
+        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredHs * accesTokenTime);
+        String refreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredHs * refreshTokenTime);
 
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_EXIST_TOKEN.getCode(), CommonErrorCode.NOT_EXIST_TOKEN.getMessage()));
@@ -140,14 +140,14 @@ public class UserService {
             JwtUtil.isExpired(refreshToken.getRefreshToken(), jwtSecretKey);
         } catch (ExpiredJwtException e) {
             //만료시 refreshToken 재발급(db 업데이트)
-            String newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * refreshTokenTime);
+            String newRefreshToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredHs * refreshTokenTime);
 
             //리프레시 토큰 저장
             refreshToken.updateRefreshToken(newRefreshToken);
         }
 
         //토큰 재발급
-        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredMs * accesTokenTime);
+        String accessToken = JwtUtil.createJwt(userInfo.getUserId(), userInfo.getUserEmail(), jwtSecretKey, expiredHs * accesTokenTime);
         String refreshTokenId = String.valueOf(refreshToken.getRefreshTokenId());
 
         return new UserTokenResponseDto(accessToken, refreshTokenId);
