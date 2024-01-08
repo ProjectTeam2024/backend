@@ -26,8 +26,12 @@ public class StakingInfo extends BaseTimeEntity implements Serializable {
     private UUID stakingId;
     @Comment(value = "코인이름")
     private String coinName;
-    @Comment(value = "연 추정 보상률")
-    private String annualRewardRate;
+    @Comment(value = "전일종가")
+    private String  prevClosingPrice;
+    @Comment(value = "연 추정 보상률 (최소)")
+    private String minAnnualRewardRate;
+    @Comment(value = "연 추정 보상률 (최대)")
+    private String maxAnnualRewardRate;
     @Comment(value = "스테이킹/언스테이킹 대기")
     private String stakingStatus;
     @Comment(value = "보상주기")

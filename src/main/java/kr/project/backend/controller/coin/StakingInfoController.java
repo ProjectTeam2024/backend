@@ -19,7 +19,7 @@ import java.util.UUID;
 @Tag(name = "staking", description = "스테이킹")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/" + Environment.API_VERSION + "/staking")
+@RequestMapping("/api/" + Environment.API_VERSION + "/" + Environment.API_USER + "/staking")
 public class StakingInfoController {
 
     private final StakingInfoService stakingInfoService;

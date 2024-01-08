@@ -13,8 +13,12 @@ import java.util.List;
 public class StakingInfoDetailResponseDto implements Serializable {
     @Schema(description = "코인이름",example = "폴리곤 (MATIC)")
     private String coinName;
-    @Schema(description = "연 추정 보상률",example = "5.3%")
-    private String annualRewardRate;
+    @Schema(description = "전일종가",example = "1111")
+    private String prevClosingPrice;
+    @Schema(description = "연 추정 보상률 (최소)",example = "5.3%")
+    private String minAnnualRewardRate;
+    @Schema(description = "연 추정 보상률 (최대)",example = "19.3%")
+    private String maxAnnualRewardRate;
     @Schema(description = "거래소",example = "업비트")
     private CoinMarketType coinMarketType;
     @Schema(description = "스테이킹/언스테이킹 대기",example = "3시간 / 3일")
@@ -31,7 +35,9 @@ public class StakingInfoDetailResponseDto implements Serializable {
 
     public StakingInfoDetailResponseDto(StakingInfo stakingInfo, List<AboutCoinMarketDto> aboutCoinMarketDtos){
         this.coinName = stakingInfo.getCoinName();
-        this.annualRewardRate = stakingInfo.getAnnualRewardRate();
+        this.prevClosingPrice = stakingInfo.getPrevClosingPrice();
+        this.minAnnualRewardRate = stakingInfo.getMinAnnualRewardRate();
+        this.maxAnnualRewardRate = stakingInfo.getMaxAnnualRewardRate();
         this.coinMarketType = stakingInfo.getCoinMarketType();
         this.stakingStatus = stakingInfo.getStakingStatus();
         this.rewardCycle = stakingInfo.getRewardCycle();
