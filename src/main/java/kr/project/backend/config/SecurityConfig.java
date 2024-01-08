@@ -46,6 +46,7 @@ public class SecurityConfig {
                                          "/api/v1/user/account/login",
                                          "/api/v1/user/account/refresh/authorize",
                                          "/api/v1/admin/account/accessKey/**",
+                                         "/api/v1/admin/file/show/image/**",
                                          "/error",
                                          "/")
                                         .permitAll()

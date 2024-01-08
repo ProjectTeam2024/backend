@@ -1,6 +1,8 @@
 package kr.project.backend.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.project.backend.common.Environment;
 import kr.project.backend.results.ObjectResult;
@@ -22,7 +24,8 @@ public class AdminController {
 
     @Operation(summary = "apiKey 발급",description = "관리자용 헤더 apikey를 발급합니다.")
     @GetMapping("/accessKey/{plainText}")
-    public ResponseEntity<?> accessKey(@PathVariable(name = "plainText") String plainText) throws Exception{
+    public ResponseEntity<?> accessKey(@Parameter(name = "plainText", description = "암호화 할 평문", example = "testText")
+                                       @PathVariable(name = "plainText") String plainText) throws Exception{
         return ObjectResult.build(adminService.adminService(plainText));
     }
     

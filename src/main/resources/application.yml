@@ -17,6 +17,10 @@ spring:
       host: <host>
       port: 123
       password: <password>
+  file:
+    uploadPath: <uploadPath>
+    url: <url>
+
 jwt:
   secretKey: <secretKey>
 
