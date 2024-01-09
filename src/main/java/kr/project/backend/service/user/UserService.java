@@ -237,6 +237,7 @@ public class UserService {
         StakingInfo stakingInfo = stakingInfoRepository.findById(unFavoriteRequestDto.getStakingId())
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_COIN.getCode(), CommonErrorCode.NOT_FOUND_COIN.getMessage()));
 
+        //즐겨찾기 정보
         Favorite favorite = favoriteRepository.findByStakingInfoAndUser(stakingInfo,userInfo)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_FAVORITE.getCode(), CommonErrorCode.NOT_FOUND_FAVORITE.getMessage()));
 

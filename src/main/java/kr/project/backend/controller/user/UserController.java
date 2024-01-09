@@ -68,7 +68,7 @@ public class UserController {
     }
     @Operation(summary = "즐겨찾기해제",description = "코인을 즑겨찾기를 해제 합니다.")
     @PutMapping("/favorite")
-    public ResponseEntity<?> changeFavorite(@AuthenticationPrincipal ServiceUser serviceUser,
+    public ResponseEntity<?> unFavorite(@AuthenticationPrincipal ServiceUser serviceUser,
                                @RequestBody UnFavoriteRequestDto favoriteRequestDto){
         userService.unFavorite(serviceUser,favoriteRequestDto);
         return ObjectResult.ok();
