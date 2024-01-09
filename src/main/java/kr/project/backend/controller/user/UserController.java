@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Environment;
+import kr.project.backend.dto.user.request.FavoriteRequestDto;
+import kr.project.backend.dto.user.request.UnFavoriteRequestDto;
 import kr.project.backend.dto.user.request.UserLoginRequestDto;
 import kr.project.backend.dto.user.request.UserRefreshTokenRequestDto;
 import kr.project.backend.results.ObjectResult;
@@ -56,6 +58,20 @@ public class UserController {
     @GetMapping("/state/check")
     public ResponseEntity<?> userStateCheck(@AuthenticationPrincipal ServiceUser serviceUser){
         return ObjectResult.build(userService.userStateCheck(serviceUser));
+    }
+    @Operation(summary = "즐겨찾기",description = "코인을 즑겨찾기를 합니다.")
+    @PostMapping("/favorite")
+    public ResponseEntity<?> addFavorite(@AuthenticationPrincipal ServiceUser serviceUser,
+                                         @RequestBody FavoriteRequestDto favoriteRequestDto){
+        userService.addFavorite(serviceUser,favoriteRequestDto);
+        return ObjectResult.ok();
+    }
+    @Operation(summary = "즐겨찾기해제",description = "코인을 즑겨찾기를 해제 합니다.")
+    @PutMapping("/favorite")
+    public ResponseEntity<?> changeFavorite(@AuthenticationPrincipal ServiceUser serviceUser,
+                               @RequestBody UnFavoriteRequestDto favoriteRequestDto){
+        userService.unFavorite(serviceUser,favoriteRequestDto);
+        return ObjectResult.ok();
     }
     
 }

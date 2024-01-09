@@ -3,18 +3,24 @@ package kr.project.backend.service.user;
 import io.jsonwebtoken.ExpiredJwtException;
 import kr.project.backend.auth.ServiceUser;
 import kr.project.backend.common.Constants;
+import kr.project.backend.dto.user.request.FavoriteRequestDto;
+import kr.project.backend.dto.user.request.UnFavoriteRequestDto;
 import kr.project.backend.dto.user.request.UserLoginRequestDto;
 import kr.project.backend.dto.user.request.UserRefreshTokenRequestDto;
 import kr.project.backend.dto.user.response.UserCheckStateResponseDto;
 import kr.project.backend.dto.user.response.UserTokenResponseDto;
+import kr.project.backend.entity.coin.StakingInfo;
 import kr.project.backend.entity.common.CommonCode;
 import kr.project.backend.entity.user.DropUser;
+import kr.project.backend.entity.user.Favorite;
 import kr.project.backend.entity.user.RefreshToken;
 import kr.project.backend.entity.user.User;
 import kr.project.backend.exception.CommonErrorCode;
 import kr.project.backend.exception.CommonException;
+import kr.project.backend.repository.coin.StakingInfoRepository;
 import kr.project.backend.repository.common.CommonCodeRepository;
 import kr.project.backend.repository.user.DropUserRepository;
+import kr.project.backend.repository.user.FavoriteRepository;
 import kr.project.backend.repository.user.UserRepository;
 import kr.project.backend.repository.user.RefreshTokenRepository;
 import kr.project.backend.utils.JwtUtil;
@@ -29,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,6 +57,8 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final DropUserRepository dropUserRepository;
     private final CommonCodeRepository commonCodeRepository;
+    private final StakingInfoRepository stakingInfoRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public UserTokenResponseDto userLogin(UserLoginRequestDto userLoginRequestDto) {
@@ -205,5 +214,34 @@ public class UserService {
 
         return new UserCheckStateResponseDto(userInfo.getUserState(),commonCode.getCommonCodeName());
     }
-    
+
+    @Transactional
+    public void addFavorite(ServiceUser serviceUser, FavoriteRequestDto favoriteRequestDto) {
+        //회원정보
+        User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+        //코인정보
+        StakingInfo stakingInfo = stakingInfoRepository.findById(favoriteRequestDto.getStakingId())
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_COIN.getCode(), CommonErrorCode.NOT_FOUND_COIN.getMessage()));
+
+        favoriteRepository.save(new Favorite(userInfo,stakingInfo));
+    }
+
+    @Transactional
+    public void unFavorite(ServiceUser serviceUser, UnFavoriteRequestDto unFavoriteRequestDto) {
+        //회원정보
+        User userInfo = userRepository.findById(UUID.fromString(serviceUser.getUserId()))
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_USER.getCode(), CommonErrorCode.NOT_FOUND_USER.getMessage()));
+
+        //코인정보
+        StakingInfo stakingInfo = stakingInfoRepository.findById(unFavoriteRequestDto.getStakingId())
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_COIN.getCode(), CommonErrorCode.NOT_FOUND_COIN.getMessage()));
+
+        Favorite favorite = favoriteRepository.findByStakingInfoAndUser(stakingInfo,userInfo)
+                .orElseThrow(() -> new CommonException(CommonErrorCode.NOT_FOUND_FAVORITE.getCode(), CommonErrorCode.NOT_FOUND_FAVORITE.getMessage()));
+
+        //즐겨찾기 헤제.
+        favorite.unFavorite();
+
+    }
 }
