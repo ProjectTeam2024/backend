@@ -43,7 +43,7 @@ public class FileController {
     @Operation(summary = "이미지 열기",description = "url 입력시 해당 이미지를 노출합니다.")
     @GetMapping("/show/image/{fileId}")
     public ResponseEntity<byte[]> showImage(@Parameter(name = "fileId", description = "파일ID", example = "6j4trvC7ac")
-                                       @PathVariable(name = "fileId") String fileId) throws Exception, IOException{
+                                       @PathVariable(name = "fileId") String fileId) throws Exception, IOException{ 
         return fileService.showImage(fileId);
     }
     
